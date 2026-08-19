@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- CITY WELFARE MEDICAL LABORATORY — vector recreation of the original crescent + WML mark. -->
+  <!-- REPLACE-ME: swap this file (or public/logo/logo-extracted.png) with the client's high-res
+       original logo file whenever it becomes available. Both are referenced from src/config/labInfo.js -->
+  <circle cx="100" cy="100" r="92" fill="none"/>
+  <!-- crescent moon -->
+  <path d="M100 12
+           a88 88 0 1 0 0 176
+           a70 70 0 1 1 0 -176 Z"
+        fill="#0B2942"/>
+  <!-- inner circle holding the letters -->
+  <circle cx="118" cy="100" r="62" fill="#0B2942"/>
+  <circle cx="118" cy="100" r="62" fill="none" stroke="#FFFFFF" stroke-width="0"/>
+  <text x="118" y="122" font-family="'Sora', sans-serif" font-weight="700" font-size="58"
+        fill="#FFFFFF" text-anchor="middle" letter-spacing="-2">WML</text>
+</svg>
