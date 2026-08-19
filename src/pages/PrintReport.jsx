@@ -1,27 +1,66 @@
 import { Link, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import EmptyState from '../components/EmptyState'
-import { getOrder, getPatient, getSettings, getResultsForOrder, getReportForOrder } from '../services/storage'
+import {
+  getOrder,
+  getPatient,
+  getSettings,
+  getResultsForOrder,
+  getReportForOrder
+} from '../services/storage'
 import { formatDate } from '../utils/format'
 
 const STATUS_COLORS = {
-  Normal: '#16A34A', Negative: '#16A34A',
-  Abnormal: '#DC2626', High: '#DC2626', Positive: '#DC2626',
-  Low: '#D97706', 'Not specified': '#718096'
+  Normal: '#16A34A',
+  Negative: '#16A34A',
+  Abnormal: '#DC2626',
+  High: '#DC2626',
+  Positive: '#DC2626',
+  Low: '#D97706',
+  'Not specified': '#718096'
 }
 
 export default function PrintReport() {
   const { orderId } = useParams()
+
   const order = getOrder(orderId)
   const patient = order ? getPatient(order.patientId) : null
   const settings = getSettings()
   const results = order ? getResultsForOrder(order.id) : null
   const report = order ? getReportForOrder(order.id) : null
 
+  /*
+   * Remove the browser/document title while this page is active.
+   * This helps prevent:
+   * "City Welfare Medical Laboratory — LIMS Demo"
+   * from appearing in the browser print header.
+   */
+  useEffect(() => {
+    const previousTitle = document.title
+
+    document.title = ''
+
+    return () => {
+      document.title = previousTitle
+    }
+  }, [])
+
   if (!order || !patient) {
     return (
       <div className="page-content">
-        <EmptyState icon="!" title="Order not found" message="This test order doesn't exist in demo storage."
-          action={<Link to="/orders" className="btn btn-primary btn-sm">Back to Orders</Link>} />
+        <EmptyState
+          icon="!"
+          title="Order not found"
+          message="This test order doesn't exist in demo storage."
+          action={
+            <Link
+              to="/orders"
+              className="btn btn-primary btn-sm"
+            >
+              Back to Orders
+            </Link>
+          }
+        />
       </div>
     )
   }
@@ -29,90 +68,281 @@ export default function PrintReport() {
   if (!results) {
     return (
       <div className="page-content">
-        <EmptyState icon="✎" title="No results entered yet" message="Enter results for this order before generating a report."
-          action={<Link to={`/results/${order.id}`} className="btn btn-primary btn-sm">Enter Results</Link>} />
+        <EmptyState
+          icon="✎"
+          title="No results entered yet"
+          message="Enter results for this order before generating a report."
+          action={
+            <Link
+              to={`/results/${order.id}`}
+              className="btn btn-primary btn-sm"
+            >
+              Enter Results
+            </Link>
+          }
+        />
       </div>
     )
   }
 
   return (
     <div className="print-page-wrap">
+
+      {/* =========================
+          PRINT TOOLBAR
+      ========================== */}
       <div className="print-toolbar">
         <div className="flex gap-8">
-          <Link to={`/patients/${patient.id}`} className="btn btn-outline">← Back</Link>
-          <Link to={`/results/${order.id}`} className="btn btn-outline">Edit Results</Link>
+          <Link
+            to={`/patients/${patient.id}`}
+            className="btn btn-outline"
+          >
+            ← Back
+          </Link>
+
+          <Link
+            to={`/results/${order.id}`}
+            className="btn btn-outline"
+          >
+            Edit Results
+          </Link>
         </div>
-        <button className="btn btn-primary" onClick={() => window.print()}>🖶 Print Report</button>
+
+        <button
+          className="btn btn-primary"
+          onClick={() => window.print()}
+        >
+          🖶 Print Report
+        </button>
       </div>
 
+
+      {/* =========================
+          A4 REPORT
+      ========================== */}
       <div className="a4-sheet">
-        <div className="doc-header">
-          <img src={settings.logoPath} alt="Lab logo" />
+
+        {/* =========================
+            LAB HEADER
+        ========================== */}
+        <div
+          className="doc-header"
+          style={{
+            marginBottom: 20
+          }}
+        >
+          <img
+            src={settings.logoPath}
+            alt="Lab logo"
+          />
+
           <div>
-            <div className="doc-lab-name">{settings.name}</div>
-            <span className="doc-lab-subtitle">{settings.subtitle}</span>
+            {/* Keep laboratory name */}
+            <div className="doc-lab-name">
+              {settings.name}
+            </div>
+
+            {/* Subtitle intentionally removed */}
           </div>
         </div>
 
-        <div className="form-grid" style={{ marginBottom: 18, fontSize: 13 }}>
-          <MetaRow label="Patient Name" value={patient.name} />
-          <MetaRow label="Patient ID" value={patient.id} mono />
-          <MetaRow label="Age" value={`${patient.age} yrs`} />
-          <MetaRow label="Gender" value={patient.gender} />
-          <MetaRow label="Referred By" value={patient.referredBy || 'Self'} />
-          <MetaRow label="Report Date" value={formatDate(new Date().toISOString())} />
-          <MetaRow label="Report No" value={report?.id || '—'} mono />
+
+        {/* =========================
+            PATIENT INFORMATION
+            Compact 2-column layout
+        ========================== */}
+        <div
+          className="report-patient-info"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            columnGap: 55,
+            rowGap: 13,
+            marginBottom: 22,
+            fontSize: 13
+          }}
+        >
+
+          {/* LEFT COLUMN */}
+
+          <MetaRow
+            label="Patient Name"
+            value={patient.name}
+          />
+
+          <MetaRow
+            label="Patient ID"
+            value={patient.id}
+            mono
+          />
+
+          <MetaRow
+            label="Age"
+            value={`${patient.age} yrs`}
+          />
+
+          <MetaRow
+            label="Gender"
+            value={patient.gender}
+          />
+
+          <MetaRow
+            label="Referred By"
+            value={patient.referredBy || 'Self'}
+          />
+
+          <MetaRow
+            label="Report Date"
+            value={formatDate(new Date().toISOString())}
+          />
+
+          {/* REPORT NUMBER */}
+          <MetaRow
+            label="Report No"
+            value={report?.id || '—'}
+            mono
+          />
+
         </div>
 
+
+        {/* =========================
+            TEST RESULTS
+        ========================== */}
         <table className="report-results-table">
           <thead>
-            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Status</th></tr>
+            <tr>
+              <th>Test</th>
+              <th>Result</th>
+              <th>Unit</th>
+              <th>Reference Range</th>
+              <th>Status</th>
+            </tr>
           </thead>
+
           <tbody>
-            {results.map(r => (
-              <tr key={r.testId}>
-                <td style={{ fontWeight: 600 }}>{r.name}</td>
-                <td>{r.result || '—'}</td>
-                <td>{r.unit || '—'}</td>
-                <td>{r.referenceRange || 'VERIFY WITH LAB'}</td>
-                <td>
-                  <span
-                    className="status-pill-print"
-                    style={{
-                      color: STATUS_COLORS[r.status] || '#718096',
-                      background: `${STATUS_COLORS[r.status] || '#718096'}18`
-                    }}
-                  >
-                    {r.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {results.map((r) => {
+              const statusColor =
+                STATUS_COLORS[r.status] || '#718096'
+
+              return (
+                <tr key={r.testId}>
+
+                  <td style={{ fontWeight: 600 }}>
+                    {r.name}
+                  </td>
+
+                  <td>
+                    {r.result || '—'}
+                  </td>
+
+                  <td>
+                    {r.unit || '—'}
+                  </td>
+
+                  <td>
+                    {r.referenceRange || 'VERIFY WITH LAB'}
+                  </td>
+
+                  <td>
+                    <span
+                      className="status-pill-print"
+                      style={{
+                        color: statusColor,
+                        background: `${statusColor}18`
+                      }}
+                    >
+                      {r.status}
+                    </span>
+                  </td>
+
+                </tr>
+              )
+            })}
           </tbody>
         </table>
 
+
+        {/* =========================
+            TECHNOLOGISTS / SIGNATURES
+        ========================== */}
         <div className="doc-techs-row">
+
           {settings.technologists.map((t, i) => (
-            <div className="doc-tech" key={i}>
-              <span className="tech-name">{t.name}</span><br />
-              {t.title}<br />
-              {t.qualification}<br />
+            <div
+              className="doc-tech"
+              key={i}
+            >
+              <span className="tech-name">
+                {t.name}
+              </span>
+
+              <br />
+
+              {t.title}
+
+              <br />
+
+              {t.qualification}
+
+              <br />
+
               {t.institute}
             </div>
           ))}
+
         </div>
 
-        <div className="doc-footer">Address: {settings.address}</div>
+
+        {/* =========================
+            FOOTER REMOVED
+        ========================== */}
+
       </div>
     </div>
   )
 }
 
+
+/* =====================================
+   PATIENT INFORMATION ROW
+===================================== */
+
 function MetaRow({ label, value, mono }) {
   return (
-    <div>
-      <div style={{ fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#718096' }}>{label}</div>
-      <div className={mono ? 'mono' : ''} style={{ fontWeight: 600 }}>{value}</div>
+    <div
+      className="report-meta-row"
+      style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 8,
+        minWidth: 0
+      }}
+    >
+
+      <div
+        style={{
+          fontSize: 10.5,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          color: '#718096',
+          fontWeight: 500,
+          minWidth: 90
+        }}
+      >
+        {label}
+      </div>
+
+      <div
+        className={mono ? 'mono' : ''}
+        style={{
+          fontWeight: 600,
+          color: '#111827'
+        }}
+      >
+        {value}
+      </div>
+
     </div>
   )
 }
