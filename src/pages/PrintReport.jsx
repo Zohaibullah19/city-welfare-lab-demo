@@ -29,12 +29,6 @@ export default function PrintReport() {
   const results = order ? getResultsForOrder(order.id) : null
   const report = order ? getReportForOrder(order.id) : null
 
-  /*
-   * Remove the browser/document title while this page is active.
-   * This helps prevent:
-   * "City Welfare Medical Laboratory — LIMS Demo"
-   * from appearing in the browser print header.
-   */
   useEffect(() => {
     const previousTitle = document.title
 
@@ -88,11 +82,13 @@ export default function PrintReport() {
   return (
     <div className="print-page-wrap">
 
-      {/* =========================
-          PRINT TOOLBAR
-      ========================== */}
+      {/* =====================================================
+          SCREEN TOOLBAR
+      ====================================================== */}
       <div className="print-toolbar">
+
         <div className="flex gap-8">
+
           <Link
             to={`/patients/${patient.id}`}
             className="btn btn-outline"
@@ -106,6 +102,7 @@ export default function PrintReport() {
           >
             Edit Results
           </Link>
+
         </div>
 
         <button
@@ -114,56 +111,52 @@ export default function PrintReport() {
         >
           🖶 Print Report
         </button>
+
       </div>
 
 
-      {/* =========================
+      {/* =====================================================
           A4 REPORT
-      ========================== */}
+      ====================================================== */}
       <div className="a4-sheet">
 
-        {/* =========================
-            LAB HEADER
-        ========================== */}
-        <div
-          className="doc-header"
-          style={{
-            marginBottom: 20
-          }}
-        >
+        {/* =================================================
+            HEADER
+        ================================================== */}
+        <div className="doc-header">
+
           <img
             src={settings.logoPath}
             alt="Lab logo"
           />
 
           <div>
-            {/* Keep laboratory name */}
+
             <div className="doc-lab-name">
               {settings.name}
             </div>
 
             {/* Subtitle intentionally removed */}
+
           </div>
+
         </div>
 
 
-        {/* =========================
+        {/* =================================================
             PATIENT INFORMATION
-            Compact 2-column layout
-        ========================== */}
+        ================================================== */}
         <div
           className="report-patient-info"
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             columnGap: 55,
-            rowGap: 13,
+            rowGap: 12,
             marginBottom: 22,
             fontSize: 13
           }}
         >
-
-          {/* LEFT COLUMN */}
 
           <MetaRow
             label="Patient Name"
@@ -171,14 +164,14 @@ export default function PrintReport() {
           />
 
           <MetaRow
-            label="Patient ID"
-            value={patient.id}
-            mono
+            label="Age"
+            value={`${patient.age} Years`}
           />
 
           <MetaRow
-            label="Age"
-            value={`${patient.age} yrs`}
+            label="Patient ID"
+            value={patient.id}
+            mono
           />
 
           <MetaRow
@@ -196,7 +189,6 @@ export default function PrintReport() {
             value={formatDate(new Date().toISOString())}
           />
 
-          {/* REPORT NUMBER */}
           <MetaRow
             label="Report No"
             value={report?.id || '—'}
@@ -206,10 +198,11 @@ export default function PrintReport() {
         </div>
 
 
-        {/* =========================
-            TEST RESULTS
-        ========================== */}
+        {/* =================================================
+            RESULTS
+        ================================================== */}
         <table className="report-results-table">
+
           <thead>
             <tr>
               <th>Test</th>
@@ -221,7 +214,9 @@ export default function PrintReport() {
           </thead>
 
           <tbody>
+
             {results.map((r) => {
+
               const statusColor =
                 STATUS_COLORS[r.status] || '#718096'
 
@@ -259,44 +254,88 @@ export default function PrintReport() {
                 </tr>
               )
             })}
+
           </tbody>
+
         </table>
 
 
-        {/* =========================
-            TECHNOLOGISTS / SIGNATURES
-        ========================== */}
-        <div className="doc-techs-row">
+        {/* =================================================
+            ELECTRONIC VERIFICATION NOTICE
+        ================================================== */}
+        <div className="report-verification-note">
 
-          {settings.technologists.map((t, i) => (
-            <div
-              className="doc-tech"
-              key={i}
-            >
-              <span className="tech-name">
-                {t.name}
-              </span>
+          <div className="verification-main">
+            Electronically Verified report. No Signature required
+          </div>
 
-              <br />
-
-              {t.title}
-
-              <br />
-
-              {t.qualification}
-
-              <br />
-
-              {t.institute}
-            </div>
-          ))}
+          <div className="verification-sub">
+            (For Diagnostic purposes, not valid for Court of Law)
+          </div>
 
         </div>
 
 
-        {/* =========================
-            FOOTER REMOVED
-        ========================== */}
+        {/* =================================================
+            TECHNOLOGISTS
+        ================================================== */}
+        <div className="doc-techs-row">
+
+          <div className="doc-tech">
+
+            <span className="tech-name">
+              Bashir Ahmad
+            </span>
+
+            <br />
+
+            BS MLT
+
+            <br />
+
+            Laboratory Technologist
+
+            <br />
+
+            Gomal University
+
+            <br />
+
+            D.I. Khan
+
+          </div>
+
+
+          <div className="doc-tech">
+
+            <span className="tech-name">
+              Asad Ullah
+            </span>
+
+            <br />
+
+            BS MLT
+
+            <br />
+
+            Laboratory Technologist
+
+            <br />
+
+            Gomal University
+
+            <br />
+
+            D.I. Khan
+
+          </div>
+
+        </div>
+
+
+        {/* =================================================
+            ADDRESS FOOTER REMOVED
+        ================================================== */}
 
       </div>
     </div>
@@ -304,9 +343,9 @@ export default function PrintReport() {
 }
 
 
-/* =====================================
-   PATIENT INFORMATION ROW
-===================================== */
+/* =========================================================
+   PATIENT META ROW
+========================================================= */
 
 function MetaRow({ label, value, mono }) {
   return (

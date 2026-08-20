@@ -455,6 +455,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 /* ---------------------------------------------------------------------- */
 /* PRINT LAYOUTS (Test Request / Lab Report)                               */
 /* ---------------------------------------------------------------------- */
+
 .print-page-wrap {
   background: var(--gray-100);
   min-height: 100vh;
@@ -463,6 +464,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   flex-direction: column;
   align-items: center;
 }
+
 .print-toolbar {
   width: 100%;
   max-width: 794px;
@@ -470,6 +472,7 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   justify-content: space-between;
   margin-bottom: 18px;
 }
+
 .a4-sheet {
   width: 794px;
   min-height: 1123px;
@@ -478,51 +481,366 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   padding: 46px 54px;
   color: #111;
 }
-.doc-header { display: flex; align-items: center; gap: 16px; border-bottom: 3px solid var(--navy-900); padding-bottom: 16px; margin-bottom: 22px; }
-.doc-header img { width: 62px; height: 62px; flex-shrink: 0; }
-.doc-header .doc-lab-name { font-family: var(--font-display); font-size: 21px; font-weight: 800; color: var(--navy-900); letter-spacing: 0.01em; }
-.doc-header .doc-lab-subtitle { display: inline-block; background: var(--navy-900); color: #fff; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 3px; margin-top: 5px; }
-.doc-meta-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--gray-300); }
-.doc-meta-row .meta-item { flex: 1; }
-.doc-meta-row .meta-label { color: var(--gray-500); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-.doc-meta-row .meta-value { font-weight: 600; color: var(--ink); }
-.doc-section-title {
-  text-align: center; background: var(--navy-900); color: #fff; font-weight: 700;
-  font-size: 13px; letter-spacing: 0.08em; padding: 6px; border-radius: 4px; margin: 18px 0 14px;
-}
-.doc-test-list { list-style: none; padding: 0; margin: 0 0 20px; column-count: 1; }
-.doc-test-list li {
-  padding: 9px 4px; border-bottom: 1px dotted var(--gray-300); font-size: 13.5px;
-  display: flex; gap: 8px;
-}
-.doc-test-list li b { color: var(--blue-600); min-width: 20px; }
-.doc-signoff-row { display: flex; justify-content: space-between; margin-top: 30px; }
-.doc-signoff-row .sign-line { border-top: 1px solid #333; width: 200px; padding-top: 6px; font-size: 12.5px; text-align: center; }
-.doc-amount-row { display: flex; justify-content: space-between; margin-top: 26px; font-size: 13.5px; }
-.doc-amount-row .line { border-bottom: 1px solid #333; min-width: 180px; display: inline-block; }
-.doc-techs-row { display: flex; justify-content: space-between; margin-top: 50px; }
-.doc-tech { font-size: 12px; line-height: 1.5; }
-.doc-tech .tech-name { font-weight: 700; font-size: 13px; color: var(--ink); border-top: 1px solid #333; padding-top: 6px; margin-top: 26px; display: inline-block; min-width: 190px; }
-.doc-footer { text-align: center; background: var(--navy-900); color: #fff; font-size: 11.5px; font-weight: 600; padding: 8px; border-radius: 4px; margin-top: 26px; }
 
-.report-results-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 12.8px; }
-.report-results-table th {
-  background: var(--navy-900); color: #fff; text-align: left; padding: 8px 10px; font-size: 11px;
-  text-transform: uppercase; letter-spacing: 0.03em;
+/* ---------------------------------------------------------------------- */
+/* REPORT HEADER                                                           */
+/* ---------------------------------------------------------------------- */
+
+.doc-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 3px solid var(--navy-900);
+  padding-bottom: 16px;
+  margin-bottom: 22px;
 }
-.report-results-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-200); }
-.report-results-table tr:nth-child(even) td { background: var(--gray-50); }
-.status-pill-print { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+
+.doc-header img {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.doc-header .doc-lab-name {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--navy-900);
+  letter-spacing: 0.01em;
+}
+
+/*
+  The subtitle is intentionally hidden on the printed report.
+  This removes:
+  "LIMS Demo"
+  or any other subtitle configured in lab settings.
+*/
+.doc-header .doc-lab-subtitle {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* REPORT PATIENT INFORMATION                                              */
+/* ---------------------------------------------------------------------- */
+
+.report-patient-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 55px;
+  row-gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.report-meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.report-meta-row > div:first-child {
+  flex-shrink: 0;
+  min-width: 90px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.report-meta-row > div:last-child {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------------- */
+/* OLD META LAYOUT                                                         */
+/* ---------------------------------------------------------------------- */
+
+.doc-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--gray-300);
+}
+
+.doc-meta-row .meta-item {
+  flex: 1;
+}
+
+.doc-meta-row .meta-label {
+  color: var(--gray-500);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.doc-meta-row .meta-value {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------- */
+/* REPORT SECTION                                                          */
+/* ---------------------------------------------------------------------- */
+
+.doc-section-title {
+  text-align: center;
+  background: var(--navy-900);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  padding: 6px;
+  border-radius: 4px;
+  margin: 18px 0 14px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* TEST REQUEST / TEST LIST                                                */
+/* ---------------------------------------------------------------------- */
+
+.doc-test-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  column-count: 1;
+}
+
+.doc-test-list li {
+  padding: 9px 4px;
+  border-bottom: 1px dotted var(--gray-300);
+  font-size: 13.5px;
+  display: flex;
+  gap: 8px;
+}
+
+.doc-test-list li b {
+  color: var(--blue-600);
+  min-width: 20px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* REPORT RESULTS TABLE                                                    */
+/* ---------------------------------------------------------------------- */
+
+.report-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 22px;
+  font-size: 12.8px;
+}
+
+.report-results-table th {
+  background: var(--navy-900);
+  color: #fff;
+  text-align: left;
+  padding: 9px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.report-results-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--gray-200);
+  vertical-align: middle;
+}
+
+.report-results-table tr:nth-child(even) td {
+  background: var(--gray-50);
+}
+
+.status-pill-print {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* ELECTRONIC VERIFICATION NOTICE                                         */
+/* ---------------------------------------------------------------------- */
+
+.report-verification-note {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 34px;
+  color: var(--ink);
+  line-height: 1.5;
+  break-inside: avoid;
+}
+
+.verification-main {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.verification-sub {
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--gray-600);
+  margin-top: 3px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* TECHNOLOGIST / SIGNATURE SECTION                                       */
+/* ---------------------------------------------------------------------- */
+
+.doc-techs-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  margin-top: 20px;
+  break-inside: avoid;
+}
+
+.doc-tech {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.doc-tech .tech-name {
+  display: inline-block;
+  min-width: 190px;
+  border-top: 1px solid #333;
+  padding-top: 6px;
+  margin-top: 26px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------- */
+/* OLD SIGN-OFF / AMOUNT SECTIONS                                         */
+/* ---------------------------------------------------------------------- */
+
+.doc-signoff-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.doc-signoff-row .sign-line {
+  border-top: 1px solid #333;
+  width: 200px;
+  padding-top: 6px;
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.doc-amount-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 26px;
+  font-size: 13.5px;
+}
+
+.doc-amount-row .line {
+  border-bottom: 1px solid #333;
+  min-width: 180px;
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------------------- */
+/* OLD FOOTER                                                             */
+/* ---------------------------------------------------------------------- */
+
+/*
+  The report footer containing:
+  "Address: ..."
+  is intentionally hidden.
+*/
+.doc-footer {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* PRINT                                                                  */
+/* ---------------------------------------------------------------------- */
 
 @media print {
-  @page { size: A4; margin: 12mm; }
-  body * { visibility: hidden; }
-  .print-toolbar { display: none !important; }
-  .print-page-wrap { background: #fff !important; padding: 0 !important; display: block !important; }
-  .a4-sheet, .a4-sheet * { visibility: visible; }
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-toolbar {
+    display: none !important;
+  }
+
+  .print-page-wrap {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .a4-sheet,
+  .a4-sheet * {
+    visibility: visible;
+  }
+
   .a4-sheet {
-    position: absolute; left: 0; top: 0; width: 100%; min-height: auto;
-    box-shadow: none; padding: 0; margin: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .doc-header {
+    margin-bottom: 20px;
+  }
+
+  .report-patient-info {
+    break-inside: avoid;
+  }
+
+  .report-results-table {
+    break-inside: auto;
+  }
+
+  .report-results-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-verification-note {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .doc-techs-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 

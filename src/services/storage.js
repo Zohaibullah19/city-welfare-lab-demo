@@ -20,7 +20,7 @@ const KEYS = {
   reports: 'cwl_reports',
   settings: 'cwl_settings',
   counters: 'cwl_counters',
-  seeded: 'cwl_seeded_v1'
+ seeded: 'cwl_seeded_v2'
 }
 
 function read(key, fallback) {
@@ -74,10 +74,20 @@ export function ensureSeeded() {
     patients.push(patient)
 
     const selectedTests = idx === 0
-      ? [findTest('CBC') || findTest('RBS'), findTest('Lipid Profile'), findTest('LFTs')].filter(Boolean)
-      : idx === 1
-        ? [findTest('TSH'), findTest('Vitamin D')].filter(Boolean)
-        : [findTest('RFTs'), findTest('Uric Acid')].filter(Boolean)
+  ? [
+      findTest('Lipid Profile'),
+      findTest('LFTs'),
+      findTest('HbA1c')
+    ].filter(Boolean)
+  : idx === 1
+    ? [
+        findTest('Dengue NS1'),
+        findTest('Typhoid IgG/IgM')
+      ].filter(Boolean)
+    : [
+        findTest('RFTs'),
+        findTest('Electrolytes')
+      ].filter(Boolean)
 
     const subtotal = selectedTests.reduce((s, t) => s + t.price, 0)
     const discount = idx === 0 ? 500 : 0
