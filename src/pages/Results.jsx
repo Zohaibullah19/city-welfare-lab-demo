@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import EmptyState from '../components/EmptyState'
-
 import StatusBadge from '../components/StatusBadge'
 
 import {
@@ -20,11 +18,8 @@ import {
 } from '../services/storage'
 
 import { formatDate } from '../utils/format'
-
 import { useToast } from '../context/ToastContext'
-
 import { useAppData } from '../context/AppDataContext'
-
 
 
 // ============================================================================
@@ -40,7 +35,6 @@ const RESULT_STATUS_OPTIONS = [
   'Positive',
   'Negative'
 ]
-
 
 
 // ============================================================================
@@ -75,39 +69,56 @@ const REFERENCE_PROFILES = [
 ]
 
 
-
 // ============================================================================
 // LABORATORY MASTER TEST LIST
 // ============================================================================
 
 const LAB_TEST_MASTER = [
+
+  // --------------------------------------------------------------------------
   // LIPID PROFILE
+  // --------------------------------------------------------------------------
+
   {
     category: 'Lipid Profile',
+    categoryAliases: ['Lipid Profile', 'Lipid', 'Lipid Profile Test'],
     parameter: 'Total Cholesterol',
-    aliases: ['Cholesterol', 'Total Cholesterol'],
+    aliases: [
+      'Total Cholesterol',
+      'Cholesterol'
+    ],
     unit: 'mg/dL',
     normalRange: '0–200',
     labSpecific: false
   },
+
   {
     category: 'Lipid Profile',
+    categoryAliases: ['Lipid Profile', 'Lipid', 'Lipid Profile Test'],
     parameter: 'Triglycerides',
-    aliases: ['Triglycerides', 'Triglycerides (TG)', 'TG'],
+    aliases: [
+      'Triglycerides',
+      'Triglycerides (TG)',
+      'TG'
+    ],
     unit: 'mg/dL',
     normalRange: '0–150',
     labSpecific: false
   },
+
   {
     category: 'Lipid Profile',
+    categoryAliases: ['Lipid Profile', 'Lipid', 'Lipid Profile Test'],
     parameter: 'HDL',
     aliases: ['HDL'],
     unit: 'mg/dL',
     normalRange: '40–60',
     labSpecific: false
   },
+
   {
     category: 'Lipid Profile',
+    categoryAliases: ['Lipid Profile', 'Lipid', 'Lipid Profile Test'],
     parameter: 'LDL',
     aliases: ['LDL'],
     unit: 'mg/dL',
@@ -115,17 +126,38 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // RFT
+  // --------------------------------------------------------------------------
+
   {
     category: 'RFT',
+    categoryAliases: [
+      'RFT',
+      'RFTs',
+      'Renal Function Test',
+      'Renal Function Tests',
+      'Kidney Function Test',
+      'Kidney Function Tests'
+    ],
     parameter: 'Urea',
     aliases: ['Urea'],
     unit: 'mg/dL',
     normalRange: '15–45',
     labSpecific: false
   },
+
   {
     category: 'RFT',
+    categoryAliases: [
+      'RFT',
+      'RFTs',
+      'Renal Function Test',
+      'Renal Function Tests',
+      'Kidney Function Test',
+      'Kidney Function Tests'
+    ],
     parameter: 'Creatinine',
     aliases: ['Creatinine'],
     unit: 'mg/dL',
@@ -133,75 +165,176 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // LFT
+  // --------------------------------------------------------------------------
+
   {
     category: 'LFT',
+    categoryAliases: [
+      'LFT',
+      'LFTs',
+      'Liver Function Test',
+      'Liver Function Tests'
+    ],
     parameter: 'ALT / SGPT',
-    aliases: ['ALT', 'ALT / SGPT', 'SGPT'],
+    aliases: [
+      'ALT',
+      'ALT / SGPT',
+      'SGPT'
+    ],
     unit: 'U/L',
     normalRange: '4–36',
     labSpecific: false
   },
+
   {
     category: 'LFT',
+    categoryAliases: [
+      'LFT',
+      'LFTs',
+      'Liver Function Test',
+      'Liver Function Tests'
+    ],
     parameter: 'ALP',
-    aliases: ['ALP', 'Alkaline Phosphatase'],
+    aliases: [
+      'ALP',
+      'Alkaline Phosphatase'
+    ],
     unit: 'U/L',
     normalRange: '20–130',
     labSpecific: false
   },
+
   {
     category: 'LFT',
+    categoryAliases: [
+      'LFT',
+      'LFTs',
+      'Liver Function Test',
+      'Liver Function Tests'
+    ],
     parameter: 'Total Bilirubin',
-    aliases: ['Total Bilirubin', 'Bilirubin', 'SBR'],
+    aliases: [
+      'Total Bilirubin',
+      'Bilirubin',
+      'SBR'
+    ],
     unit: 'mg/dL',
     normalRange: '0.1–1.2',
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // ABGs
+  // --------------------------------------------------------------------------
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'pH',
     aliases: ['pH'],
     unit: '—',
     normalRange: '7.35–7.45',
     labSpecific: false
   },
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'PCO₂',
-    aliases: ['PCO', 'PCO₂', 'pCO₂', 'pCO2', 'pCO'],
+    aliases: [
+      'PCO',
+      'PCO₂',
+      'pCO₂',
+      'pCO2',
+      'pCO'
+    ],
     unit: 'mmHg',
     normalRange: '35–45',
     labSpecific: false
   },
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'PO₂',
-    aliases: ['PO', 'PO₂', 'pO₂', 'pO2', 'pO'],
+    aliases: [
+      'PO',
+      'PO₂',
+      'pO₂',
+      'pO2',
+      'pO'
+    ],
     unit: 'mmHg',
     normalRange: '80–100',
     labSpecific: false
   },
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'HCO₃',
-    aliases: ['HCO₃', 'HCO3', 'HCO₃⁻', 'Bicarbonate'],
+    aliases: [
+      'HCO₃',
+      'HCO3',
+      'HCO₃⁻',
+      'Bicarbonate'
+    ],
     unit: 'mmol/L',
     normalRange: '22–26',
     labSpecific: false
   },
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'Base Excess / Deficit',
-    aliases: ['Base Excess / Deficit', 'Base Excess', 'Base Deficit'],
+    aliases: [
+      'Base Excess / Deficit',
+      'Base Excess',
+      'Base Deficit'
+    ],
     unit: 'mmol/L',
     normalRange: '−2 to +2',
     labSpecific: false
   },
+
   {
     category: 'ABGs',
+    categoryAliases: [
+      'ABGs',
+      'ABG',
+      'Arterial Blood Gas',
+      'Arterial Blood Gases'
+    ],
     parameter: 'O₂ Saturation',
     aliases: [
       'O₂ Saturation',
@@ -214,9 +347,17 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // ELECTROLYTES
+  // --------------------------------------------------------------------------
+
   {
     category: 'Electrolytes',
+    categoryAliases: [
+      'Electrolytes',
+      'Electrolyte'
+    ],
     parameter: 'Sodium (Na⁺)',
     aliases: [
       'Sodium (Na)',
@@ -229,8 +370,13 @@ const LAB_TEST_MASTER = [
     normalRange: '135–145',
     labSpecific: false
   },
+
   {
     category: 'Electrolytes',
+    categoryAliases: [
+      'Electrolytes',
+      'Electrolyte'
+    ],
     parameter: 'Potassium (K⁺)',
     aliases: [
       'Potassium (K)',
@@ -243,8 +389,13 @@ const LAB_TEST_MASTER = [
     normalRange: '3.5–5.2',
     labSpecific: false
   },
+
   {
     category: 'Electrolytes',
+    categoryAliases: [
+      'Electrolytes',
+      'Electrolyte'
+    ],
     parameter: 'Chloride (Cl⁻)',
     aliases: [
       'Chloride (Cl)',
@@ -258,9 +409,19 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // INFECTIOUS / SEROLOGY
+  // --------------------------------------------------------------------------
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Malaria Parasite (MP)',
     aliases: [
       'Malaria Parasite (MP)',
@@ -272,138 +433,292 @@ const LAB_TEST_MASTER = [
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Dengue NS1',
     aliases: ['Dengue NS1'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Dengue IgG',
     aliases: ['Dengue IgG'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Dengue IgM',
     aliases: ['Dengue IgM'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Typhoid IgG',
     aliases: ['Typhoid IgG'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Typhoid IgM',
     aliases: ['Typhoid IgM'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'Widal TO/TH',
-    aliases: ['Widal TO/TH', 'Widal TO/TI', 'Widal TO', 'Widal TH', 'Widal'],
+    aliases: [
+      'Widal TO/TH',
+      'Widal TO/TI',
+      'Widal TO',
+      'Widal TH',
+      'Widal'
+    ],
     unit: 'Titer',
     normalRange: 'Lab-specific',
     labSpecific: true
   },
+
   {
     category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
     parameter: 'HBsAg by ELISA',
-    aliases: ['HBsAg by ELISA', 'HBs by ELISA', 'HBsAg'],
-    unit: '—',
-    normalRange: 'Non-reactive',
-    labSpecific: true
-  },
-  {
-    category: 'Infectious / Serology',
-    parameter: 'HCV by ELISA',
-    aliases: ['HCV by ELISA', 'HCV'],
-    unit: '—',
-    normalRange: 'Non-reactive',
-    labSpecific: true
-  },
-  {
-    category: 'Infectious / Serology',
-    parameter: 'HIV by ELISA',
-    aliases: ['HIV by ELISA', 'HIV'],
+    aliases: [
+      'HBsAg by ELISA',
+      'HBs by ELISA',
+      'HBsAg'
+    ],
     unit: '—',
     normalRange: 'Non-reactive',
     labSpecific: true
   },
 
+  {
+    category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
+    parameter: 'HCV by ELISA',
+    aliases: [
+      'HCV by ELISA',
+      'HCV'
+    ],
+    unit: '—',
+    normalRange: 'Non-reactive',
+    labSpecific: true
+  },
+
+  {
+    category: 'Infectious / Serology',
+    categoryAliases: [
+      'Infectious / Serology',
+      'Infectious',
+      'Serology',
+      'Infectious Serology'
+    ],
+    parameter: 'HIV by ELISA',
+    aliases: [
+      'HIV by ELISA',
+      'HIV'
+    ],
+    unit: '—',
+    normalRange: 'Non-reactive',
+    labSpecific: true
+  },
+
+
+  // --------------------------------------------------------------------------
   // OTHER LABORATORY
+  // --------------------------------------------------------------------------
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'HbA1c',
-    aliases: ['HbA1c', 'Hb A1c', 'Glycated Hemoglobin'],
+    aliases: [
+      'HbA1c',
+      'Hb A1c',
+      'Glycated Hemoglobin'
+    ],
     unit: '%',
     normalRange: '<5.7',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'Stool R/E',
-    aliases: ['Stool R/E', 'Stool RE', 'Stool Examination'],
+    aliases: [
+      'Stool R/E',
+      'Stool RE',
+      'Stool Examination'
+    ],
     unit: '—',
     normalRange: 'Normal findings',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'Urine Culture / C/S',
-    aliases: ['Urine Culture', 'Urine Culture / C/S', 'Urine C/S'],
+    aliases: [
+      'Urine Culture',
+      'Urine Culture / C/S',
+      'Urine C/S'
+    ],
     unit: '—',
     normalRange: 'No growth',
     labSpecific: true
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'Blood Culture / C/S',
-    aliases: ['Blood Culture', 'Blood Culture / C/S', 'Blood C/S'],
+    aliases: [
+      'Blood Culture',
+      'Blood Culture / C/S',
+      'Blood C/S'
+    ],
     unit: '—',
     normalRange: 'No growth',
     labSpecific: true
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'PCR',
     aliases: ['PCR'],
     unit: '—',
     normalRange: 'Not detected',
     labSpecific: true
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'Blood Ketones',
-    aliases: ['Ketone Blood', 'Blood Ketones', 'Blood Ketone'],
+    aliases: [
+      'Ketone Blood',
+      'Blood Ketones',
+      'Blood Ketone'
+    ],
     unit: 'mmol/L',
     normalRange: '<0.6',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'Urine Ketones',
-    aliases: ['Ketone Urine', 'Urine Ketones', 'Urine Ketone'],
+    aliases: [
+      'Ketone Urine',
+      'Urine Ketones',
+      'Urine Ketone'
+    ],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'RA Factor / Rheumatoid Factor',
     aliases: [
       'RA Factor',
@@ -414,86 +729,179 @@ const LAB_TEST_MASTER = [
     normalRange: '<15',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'ASO Titer',
-    aliases: ['ASO Titer', 'ASO'],
+    aliases: [
+      'ASO Titer',
+      'ASO'
+    ],
     unit: 'IU/mL',
     normalRange: '<200',
     labSpecific: false
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'ANA',
     aliases: ['ANA'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: true
   },
+
   {
     category: 'Other Laboratory',
+    categoryAliases: [
+      'Other Laboratory',
+      'Other Lab',
+      'Other Laboratory Tests'
+    ],
     parameter: 'CRP',
-    aliases: ['CRP', 'C-Reactive Protein'],
+    aliases: [
+      'CRP',
+      'C-Reactive Protein'
+    ],
     unit: 'mg/L',
     normalRange: '<3',
     labSpecific: false
   },
 
+
+  // --------------------------------------------------------------------------
   // CARDIAC
+  // --------------------------------------------------------------------------
+
   {
     category: 'Cardiac',
+    categoryAliases: [
+      'Cardiac',
+      'Cardiac Tests',
+      'Cardiac Markers'
+    ],
     parameter: 'Troponin-I',
-    aliases: ['Troponin-I', 'Troponin I', 'Troponin-I (TnI)'],
+    aliases: [
+      'Troponin-I',
+      'Troponin I',
+      'Troponin-I (TnI)'
+    ],
     unit: 'ng/L or ng/mL',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
+
   {
     category: 'Cardiac',
+    categoryAliases: [
+      'Cardiac',
+      'Cardiac Tests',
+      'Cardiac Markers'
+    ],
     parameter: 'Troponin-T',
-    aliases: ['Troponin-T', 'Troponin T', 'Troponin-T (TnT)'],
+    aliases: [
+      'Troponin-T',
+      'Troponin T',
+      'Troponin-T (TnT)'
+    ],
     unit: 'ng/L',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
+
   {
     category: 'Cardiac',
+    categoryAliases: [
+      'Cardiac',
+      'Cardiac Tests',
+      'Cardiac Markers'
+    ],
     parameter: 'CK-MB',
-    aliases: ['CK-MB', 'CK MB', 'CKMB'],
+    aliases: [
+      'CK-MB',
+      'CK MB',
+      'CKMB'
+    ],
     unit: 'ng/mL or U/L',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
 
+
+  // --------------------------------------------------------------------------
   // ADDITIONAL BIOCHEMISTRY
+  // --------------------------------------------------------------------------
+
   {
     category: 'Additional Biochemistry',
+    categoryAliases: [
+      'Additional Biochemistry',
+      'Biochemistry',
+      'Additional Biochem'
+    ],
     parameter: 'Albumin',
     aliases: ['Albumin'],
     unit: 'g/dL',
     normalRange: '3.4–5.4',
     labSpecific: false
   },
+
   {
     category: 'Additional Biochemistry',
+    categoryAliases: [
+      'Additional Biochemistry',
+      'Biochemistry',
+      'Additional Biochem'
+    ],
     parameter: 'Total Bilirubin',
-    aliases: ['Total Bilirubin', 'Bilirubin Total'],
+    aliases: [
+      'Total Bilirubin',
+      'Bilirubin Total'
+    ],
     unit: 'mg/dL',
     normalRange: '0.1–1.2',
     labSpecific: false
   },
+
   {
     category: 'Additional Biochemistry',
+    categoryAliases: [
+      'Additional Biochemistry',
+      'Biochemistry',
+      'Additional Biochem'
+    ],
     parameter: 'Direct Bilirubin',
-    aliases: ['Direct Bilirubin', 'Bilirubin Direct'],
+    aliases: [
+      'Direct Bilirubin',
+      'Bilirubin Direct'
+    ],
     unit: 'mg/dL',
     normalRange: '<0.3',
     labSpecific: false
   },
+
   {
     category: 'Additional Biochemistry',
+    categoryAliases: [
+      'Additional Biochemistry',
+      'Biochemistry',
+      'Additional Biochem'
+    ],
     parameter: 'Indirect Bilirubin',
-    aliases: ['Indirect Bilirubin', 'Bilirubin Indirect'],
+    aliases: [
+      'Indirect Bilirubin',
+      'Bilirubin Indirect'
+    ],
     unit: 'mg/dL',
     normalRange: '0.2–0.9',
     labSpecific: false
@@ -501,23 +909,21 @@ const LAB_TEST_MASTER = [
 ]
 
 
-
 // ============================================================================
-// NORMALIZE PARAMETER NAME
+// NORMALIZE TEXT
 // ============================================================================
 
 function normalizeParameter(value) {
   return String(value || '')
     .toLowerCase()
     .replace(/[₂₃₄₅₆₇₈₉₀]/g, '')
-    .replace(/⁺|⁻/g, '')
+    .replace(/[⁺⁻]/g, '')
     .replace(/[^a-z0-9]+/g, '')
 }
 
 
-
 // ============================================================================
-// FIND MASTER PARAMETER
+// FIND INDIVIDUAL MASTER PARAMETER
 // ============================================================================
 
 function findMasterParameter(name) {
@@ -528,8 +934,9 @@ function findMasterParameter(name) {
   }
 
   const exactMatch = LAB_TEST_MASTER.find(item =>
-    item.aliases.some(alias =>
-      normalizeParameter(alias) === normalizedName
+    item.aliases.some(
+      alias =>
+        normalizeParameter(alias) === normalizedName
     )
   )
 
@@ -539,7 +946,8 @@ function findMasterParameter(name) {
 
   const partialMatch = LAB_TEST_MASTER.find(item =>
     item.aliases.some(alias => {
-      const normalizedAlias = normalizeParameter(alias)
+      const normalizedAlias =
+        normalizeParameter(alias)
 
       return (
         normalizedName.includes(normalizedAlias) ||
@@ -551,6 +959,57 @@ function findMasterParameter(name) {
   return partialMatch || null
 }
 
+
+// ============================================================================
+// FIND CATEGORY PARAMETERS
+// ============================================================================
+
+function findCategoryParameters(name) {
+  const normalizedName = normalizeParameter(name)
+
+  if (!normalizedName) {
+    return []
+  }
+
+  return LAB_TEST_MASTER.filter(item =>
+    (item.categoryAliases || []).some(
+      alias =>
+        normalizeParameter(alias) === normalizedName
+    )
+  )
+}
+
+
+// ============================================================================
+// FIND MASTER DATA
+// Supports both individual parameters and category names.
+// ============================================================================
+
+function findMasterData(name) {
+  const individual = findMasterParameter(name)
+
+  if (individual) {
+    return {
+      type: 'parameter',
+      items: [individual]
+    }
+  }
+
+  const categoryItems =
+    findCategoryParameters(name)
+
+  if (categoryItems.length > 0) {
+    return {
+      type: 'category',
+      items: categoryItems
+    }
+  }
+
+  return {
+    type: 'unknown',
+    items: []
+  }
+}
 
 
 // ============================================================================
@@ -568,7 +1027,8 @@ function getAutomaticProfile(patient) {
     return 'Child'
   }
 
-  const gender = String(patient.gender || '').toLowerCase()
+  const gender =
+    String(patient.gender || '').toLowerCase()
 
   if (
     gender.includes('female') ||
@@ -588,51 +1048,36 @@ function getAutomaticProfile(patient) {
 }
 
 
-
 // ============================================================================
 // REFERENCE DATA
 // ============================================================================
 
-function getReferenceData(masterParameter, profile) {
+function getReferenceData(
+  masterParameter,
+  profile
+) {
   if (!masterParameter) {
     return {
       unit: '',
-      referenceRange: 'Lab-specific / Verify',
+      referenceRange:
+        'Lab-specific / Verify',
       labSpecific: true,
       demographicFallback: false
     }
   }
 
-  if (profile === 'Other') {
-    return {
-      unit: masterParameter.unit,
-      referenceRange: masterParameter.normalRange,
-      labSpecific: true,
-      demographicFallback: true
-    }
-  }
-
-  if (
-    profile === 'Male' ||
-    profile === 'Female' ||
-    profile === 'Child'
-  ) {
-    return {
-      unit: masterParameter.unit,
-      referenceRange: masterParameter.normalRange,
-      labSpecific: true,
-      demographicFallback: true
-    }
-  }
-
   return {
     unit: masterParameter.unit,
-    referenceRange: masterParameter.normalRange,
-    labSpecific: !!masterParameter.labSpecific,
-    demographicFallback: false
+    referenceRange:
+      masterParameter.normalRange,
+    labSpecific:
+      profile !== 'Auto'
+        ? true
+        : !!masterParameter.labSpecific,
+    demographicFallback:
+      profile !== 'Auto'
   }
 }
-
 
 
 // ============================================================================
@@ -649,7 +1094,7 @@ function parseReferenceRange(range) {
     return null
   }
 
-  // 15-45
+  // Example: 15-45
   const betweenMatch =
     value.match(
       /^(-?\d+(?:\.\d+)?)\s*-\s*(-?\d+(?:\.\d+)?)$/
@@ -663,7 +1108,7 @@ function parseReferenceRange(range) {
     }
   }
 
-  // <5.7
+  // Example: <5.7
   const lessMatch =
     value.match(
       /^<\s*(-?\d+(?:\.\d+)?)$/
@@ -676,7 +1121,7 @@ function parseReferenceRange(range) {
     }
   }
 
-  // >5
+  // Example: >5
   const greaterMatch =
     value.match(
       /^>\s*(-?\d+(?:\.\d+)?)$/
@@ -689,7 +1134,7 @@ function parseReferenceRange(range) {
     }
   }
 
-  // -2 to +2
+  // Example: -2 to +2
   const toMatch =
     value.match(
       /^(-?\d+(?:\.\d+)?)\s*to\s*\+?(-?\d+(?:\.\d+)?)$/i
@@ -707,9 +1152,8 @@ function parseReferenceRange(range) {
 }
 
 
-
 // ============================================================================
-// NORMALIZE NUMERIC RESULT
+// PARSE NUMERIC RESULT
 // ============================================================================
 
 function parseNumericResult(result) {
@@ -741,7 +1185,6 @@ function parseNumericResult(result) {
     ? number
     : null
 }
-
 
 
 // ============================================================================
@@ -791,7 +1234,6 @@ function calculateNumericStatus(
 
   return null
 }
-
 
 
 // ============================================================================
@@ -858,13 +1300,19 @@ function calculateTextStatus(
     return 'Normal'
   }
 
+  if (
+    normalizedReference === 'negative' &&
+    normalizedResult === 'negative'
+  ) {
+    return 'Negative'
+  }
+
   return null
 }
 
 
-
 // ============================================================================
-// DETERMINE RESULT STATUS
+// DETERMINE STATUS
 // ============================================================================
 
 function determineResultStatus(
@@ -902,6 +1350,99 @@ function determineResultStatus(
 }
 
 
+// ============================================================================
+// CREATE RESULT ROW FROM MASTER PARAMETER
+// ============================================================================
+
+function createMasterRow({
+  orderTest,
+  masterParameter,
+  index,
+  patient,
+  existingRow
+}) {
+  const savedProfile =
+    existingRow?.referenceProfile || 'Auto'
+
+  const actualProfile =
+    savedProfile === 'Auto'
+      ? getAutomaticProfile(patient)
+      : savedProfile
+
+  const referenceData =
+    getReferenceData(
+      masterParameter,
+      actualProfile
+    )
+
+  const result =
+    existingRow?.result || ''
+
+  const referenceRange =
+    existingRow?.referenceRange ||
+    referenceData.referenceRange
+
+  const unit =
+    referenceData.unit ||
+    existingRow?.unit ||
+    ''
+
+  const status =
+    existingRow?.status &&
+    existingRow.status !== 'Not specified'
+      ? existingRow.status
+      : determineResultStatus(
+          {
+            ...(existingRow || {}),
+            result,
+            referenceRange
+          },
+          existingRow?.status
+        )
+
+  return {
+    ...(existingRow || {}),
+
+    id:
+      existingRow?.id ||
+      `${orderTest.testId}-${index}`,
+
+    testId:
+      existingRow?.testId ||
+      orderTest.testId,
+
+    testName:
+      orderTest.name,
+
+    name:
+      masterParameter.parameter,
+
+    result,
+
+    // IMPORTANT:
+    // These are always taken from the master list.
+    unit,
+
+    referenceRange,
+
+    status,
+
+    referenceProfile:
+      savedProfile,
+
+    labSpecific:
+      existingRow?.labSpecific ??
+      referenceData.labSpecific,
+
+    demographicFallback:
+      existingRow?.demographicFallback ??
+      referenceData.demographicFallback,
+
+    notes:
+      existingRow?.notes || ''
+  }
+}
+
 
 // ============================================================================
 // BUILD INITIAL ROWS
@@ -916,195 +1457,159 @@ function buildInitialRows(
     return []
   }
 
-  // --------------------------------------------------------------------------
-  // Existing results
-  // --------------------------------------------------------------------------
-
-  if (
-    existingResults &&
-    existingResults.length > 0
-  ) {
-    return existingResults.map(
-      (row, index) => {
-        const masterParameter =
-          findMasterParameter(row.name) ||
-          findMasterParameter(row.testName)
-
-        const savedProfile =
-          row.referenceProfile || 'Auto'
-
-        const profile =
-          savedProfile === 'Auto'
-            ? getAutomaticProfile(patient)
-            : savedProfile
-
-        const referenceData =
-          getReferenceData(
-            masterParameter,
-            profile
-          )
-
-        const result =
-          row.result || ''
-
-        const status =
-          row.status &&
-          row.status !== 'Not specified'
-            ? row.status
-            : determineResultStatus(
-                {
-                  ...row,
-                  result,
-                  referenceRange:
-                    row.referenceRange ||
-                    referenceData.referenceRange
-                },
-                row.status
-              )
-
-        return {
-          ...row,
-
-          id:
-            row.id ||
-            `${row.testId || 'result'}-${index}`,
-
-          referenceProfile:
-            savedProfile,
-
-         unit:
-  referenceData.unit ||
-  row.unit ||
-  '',
-
-referenceRange:
-  referenceData.referenceRange ||
-  row.referenceRange ||
-  'Lab-specific / Verify',
-
-          status,
-
-          labSpecific:
-            row.labSpecific ??
-            referenceData.labSpecific,
-
-          demographicFallback:
-            row.demographicFallback ??
-            referenceData.demographicFallback,
-
-          notes:
-            row.notes || ''
-        }
-      }
-    )
-  }
-
-
-
-  // --------------------------------------------------------------------------
-  // Fresh rows
-  // --------------------------------------------------------------------------
+  const savedResults =
+    existingResults || []
 
   const rows = []
 
   ;(order.tests || []).forEach(
-    testInOrder => {
-      const masterParameter =
-        findMasterParameter(
-          testInOrder.name
+    orderTest => {
+
+      const masterData =
+        findMasterData(orderTest.name)
+
+      // ----------------------------------------------------------------------
+      // CATEGORY TEST
+      // Example:
+      // "Lipid Profile" becomes 4 rows.
+      // ----------------------------------------------------------------------
+
+      if (
+        masterData.type === 'category'
+      ) {
+        masterData.items.forEach(
+          (masterParameter, index) => {
+
+            const existingRow =
+              savedResults.find(
+                row =>
+                  normalizeParameter(
+                    row.name
+                  ) ===
+                    normalizeParameter(
+                      masterParameter.parameter
+                    ) &&
+                  (
+                    row.testId ===
+                      orderTest.testId ||
+                    row.testName ===
+                      orderTest.name
+                  )
+              )
+
+            rows.push(
+              createMasterRow({
+                orderTest,
+                masterParameter,
+                index,
+                patient,
+                existingRow
+              })
+            )
+          }
         )
-
-      if (masterParameter) {
-        const referenceData =
-          getReferenceData(
-            masterParameter,
-            'Adult'
-          )
-
-        rows.push({
-          id:
-            `${testInOrder.testId}-0`,
-
-          testId:
-            testInOrder.testId,
-
-          testName:
-            testInOrder.name,
-
-          name:
-            masterParameter.parameter,
-
-          result:
-            '',
-
-          unit:
-            referenceData.unit,
-
-          referenceRange:
-            referenceData.referenceRange,
-
-          status:
-            'Not specified',
-
-          referenceProfile:
-            'Auto',
-
-          labSpecific:
-            referenceData.labSpecific,
-
-          demographicFallback:
-            false,
-
-          notes:
-            ''
-        })
 
         return
       }
 
+      // ----------------------------------------------------------------------
+      // INDIVIDUAL PARAMETER
+      // ----------------------------------------------------------------------
+
+      if (
+        masterData.type === 'parameter'
+      ) {
+        const masterParameter =
+          masterData.items[0]
+
+        const existingRow =
+          savedResults.find(
+            row =>
+              normalizeParameter(
+                row.name
+              ) ===
+                normalizeParameter(
+                  masterParameter.parameter
+                ) &&
+              (
+                row.testId ===
+                  orderTest.testId ||
+                row.testName ===
+                  orderTest.name
+              )
+          )
+
+        rows.push(
+          createMasterRow({
+            orderTest,
+            masterParameter,
+            index: 0,
+            patient,
+            existingRow
+          })
+        )
+
+        return
+      }
+
+      // ----------------------------------------------------------------------
+      // UNKNOWN TEST
+      // ----------------------------------------------------------------------
+
+      const existingRow =
+        savedResults.find(
+          row =>
+            row.testId ===
+              orderTest.testId
+        )
+
       rows.push({
+        ...(existingRow || {}),
+
         id:
-          `${testInOrder.testId}-0`,
+          existingRow?.id ||
+          `${orderTest.testId}-0`,
 
         testId:
-          testInOrder.testId,
+          orderTest.testId,
 
         testName:
-          testInOrder.name,
+          orderTest.name,
 
         name:
-          testInOrder.name,
+          existingRow?.name ||
+          orderTest.name,
 
         result:
-          '',
+          existingRow?.result || '',
 
         unit:
-          '',
+          existingRow?.unit || '',
 
         referenceRange:
+          existingRow?.referenceRange ||
           'Lab-specific / Verify',
 
         status:
+          existingRow?.status ||
           'Not specified',
 
         referenceProfile:
+          existingRow?.referenceProfile ||
           'Auto',
 
-        labSpecific:
-          true,
+        labSpecific: true,
 
-        demographicFallback:
-          false,
+        demographicFallback: false,
 
         notes:
-          ''
+          existingRow?.notes || ''
       })
     }
   )
 
   return rows
 }
-
 
 
 // ============================================================================
@@ -1137,7 +1642,6 @@ function getResultStatusClass(status) {
 }
 
 
-
 // ============================================================================
 // RESULTS LIST
 // ============================================================================
@@ -1145,11 +1649,8 @@ function getResultStatusClass(status) {
 export function ResultsList() {
   useAppData()
 
-  const orders =
-    getOrders()
-
-  const patients =
-    getPatients()
+  const orders = getOrders()
+  const patients = getPatients()
 
   const patientMap =
     Object.fromEntries(
@@ -1169,90 +1670,44 @@ export function ResultsList() {
 
   return (
     <>
-
       <div className="page-header">
-
         <div>
-
-          <h2>
-            Results
-          </h2>
+          <h2>Results</h2>
 
           <p className="subtitle">
             Orders awaiting or with in-progress results entry
           </p>
-
         </div>
-
       </div>
 
-
-
       <div className="card">
-
         {pending.length === 0 ? (
-
           <EmptyState
             icon="✎"
             title="Nothing pending"
             message="All orders have been reported, or no orders exist yet."
           />
-
         ) : (
-
           <div className="table-wrap">
-
             <table className="data-table">
-
               <thead>
-
                 <tr>
-
-                  <th>
-                    Order ID
-                  </th>
-
-                  <th>
-                    Patient
-                  </th>
-
-                  <th>
-                    Tests
-                  </th>
-
-                  <th>
-                    Status
-                  </th>
-
-                  <th>
-                    Date
-                  </th>
-
-                  <th>
-                    Actions
-                  </th>
-
+                  <th>Order ID</th>
+                  <th>Patient</th>
+                  <th>Tests</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
                 </tr>
-
               </thead>
 
-
-
               <tbody>
-
                 {pending.map(order => {
-
                   const patient =
-                    patientMap[
-                      order.patientId
-                    ]
+                    patientMap[order.patientId]
 
                   return (
-
-                    <tr
-                      key={order.id}
-                    >
-
+                    <tr key={order.id}>
                       <td className="cell-id">
                         {order.id}
                       </td>
@@ -1263,64 +1718,47 @@ export function ResultsList() {
                       </td>
 
                       <td className="cell-muted">
-
                         {(order.tests || [])
                           .map(
                             test =>
                               test.name
                           )
                           .join(', ')}
-
                       </td>
 
                       <td>
-
                         <StatusBadge
                           status={
                             order.status
                           }
                         />
-
                       </td>
 
                       <td className="cell-muted">
-
                         {formatDate(
                           order.createdAt
                         )}
-
                       </td>
 
                       <td>
-
                         <Link
                           to={`/results/${order.id}`}
                           className="btn btn-primary btn-sm"
                         >
                           Enter Results
                         </Link>
-
                       </td>
-
                     </tr>
-
                   )
                 })}
-
               </tbody>
-
             </table>
-
           </div>
-
         )}
-
       </div>
-
     </>
   )
 }
-
 
 
 // ============================================================================
@@ -1328,7 +1766,6 @@ export function ResultsList() {
 // ============================================================================
 
 export function ResultEntry() {
-
   const { orderId } =
     useParams()
 
@@ -1346,26 +1783,21 @@ export function ResultEntry() {
 
   const patient =
     order
-      ? getPatient(
-          order.patientId
-        )
+      ? getPatient(order.patientId)
       : null
 
   const existing =
     order
-      ? getResultsForOrder(
-          order.id
-        )
+      ? getResultsForOrder(order.id)
       : null
 
   const [rows, setRows] =
-    useState(
-      () =>
-        buildInitialRows(
-          order,
-          existing,
-          patient
-        )
+    useState(() =>
+      buildInitialRows(
+        order,
+        existing,
+        patient
+      )
     )
 
   const [saving, setSaving] =
@@ -1378,33 +1810,27 @@ export function ResultEntry() {
     useState(false)
 
 
-
   // --------------------------------------------------------------------------
-  // Refresh rows if order changes
+  // REFRESH
   // --------------------------------------------------------------------------
 
   useEffect(() => {
-
     setRows(
       buildInitialRows(
         order,
-        existing,
+        getResultsForOrder(orderId),
         patient
       )
     )
-
   }, [orderId])
 
 
-
   // --------------------------------------------------------------------------
-  // Missing order
+  // MISSING ORDER
   // --------------------------------------------------------------------------
 
   if (!order || !patient) {
-
     return (
-
       <EmptyState
         icon="!"
         title="Order not found"
@@ -1418,10 +1844,8 @@ export function ResultEntry() {
           </Link>
         }
       />
-
     )
   }
-
 
 
   // --------------------------------------------------------------------------
@@ -1430,60 +1854,43 @@ export function ResultEntry() {
 
   const updateRow =
     (rowId, field, value) => {
+      setRows(currentRows =>
+        currentRows.map(row => {
 
-      setRows(
-        currentRows =>
-          currentRows.map(
-            row => {
+          if (row.id !== rowId) {
+            return row
+          }
 
-              if (
-                row.id !== rowId
-              ) {
-                return row
-              }
+          const updated = {
+            ...row,
+            [field]: value
+          }
 
-              const updated =
-                {
-                  ...row,
-                  [field]: value
-                }
+          if (
+            field === 'result' ||
+            field === 'referenceRange'
+          ) {
+            const calculatedStatus =
+              determineResultStatus(
+                updated,
+                row.status
+              )
 
-              // Automatically determine status
-              // when result or reference range changes.
-
-              if (
-                field === 'result' ||
-                field === 'referenceRange'
-              ) {
-
-                const calculatedStatus =
-                  determineResultStatus(
-                    updated,
-                    row.status
-                  )
-
-                if (
-                  row.status ===
-                    'Not specified' ||
-                  field ===
-                    'referenceRange'
-                ) {
-
-                  updated.status =
-                    calculatedStatus
-
-                }
-
-              }
-
-              return updated
-
+            if (
+              row.status ===
+                'Not specified' ||
+              field ===
+                'referenceRange'
+            ) {
+              updated.status =
+                calculatedStatus
             }
-          )
+          }
+
+          return updated
+        })
       )
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1492,22 +1899,17 @@ export function ResultEntry() {
 
   const updateStatus =
     (rowId, status) => {
-
-      setRows(
-        currentRows =>
-          currentRows.map(
-            row =>
-              row.id === rowId
-                ? {
-                    ...row,
-                    status
-                  }
-                : row
-          )
+      setRows(currentRows =>
+        currentRows.map(row =>
+          row.id === rowId
+            ? {
+                ...row,
+                status
+              }
+            : row
+        )
       )
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1520,86 +1922,75 @@ export function ResultEntry() {
       selectedProfile
     ) => {
 
-      setRows(
-        currentRows =>
-          currentRows.map(
-            row => {
+      setRows(currentRows =>
+        currentRows.map(row => {
 
-              if (
-                row.id !== rowId
-              ) {
-                return row
-              }
+          if (row.id !== rowId) {
+            return row
+          }
 
-              const masterParameter =
-                findMasterParameter(
-                  row.name
-                ) ||
-                findMasterParameter(
-                  row.testName
+          const masterParameter =
+            findMasterParameter(
+              row.name
+            ) ||
+            findMasterParameter(
+              row.testName
+            )
+
+          const actualProfile =
+            selectedProfile === 'Auto'
+              ? getAutomaticProfile(
+                  patient
                 )
+              : selectedProfile
 
-              const actualProfile =
-                selectedProfile ===
-                  'Auto'
-                  ? getAutomaticProfile(
-                      patient
-                    )
-                  : selectedProfile
+          const referenceData =
+            getReferenceData(
+              masterParameter,
+              actualProfile
+            )
 
-              const referenceData =
-                getReferenceData(
-                  masterParameter,
-                  actualProfile
-                )
+          const updatedRow = {
+            ...row,
 
-              const updatedRow = {
+            referenceProfile:
+              selectedProfile,
 
-                ...row,
+            // Always restore master unit.
+            unit:
+              referenceData.unit ||
+              row.unit,
 
-                referenceProfile:
-                  selectedProfile,
+            // Always restore master range.
+            referenceRange:
+              referenceData.referenceRange ||
+              row.referenceRange,
 
-                unit:
-                  referenceData.unit ||
-                  row.unit,
+            labSpecific:
+              referenceData.labSpecific,
 
-                referenceRange:
-                  referenceData.referenceRange ||
-                  row.referenceRange,
+            demographicFallback:
+              referenceData.demographicFallback
+          }
 
-                labSpecific:
-                  referenceData.labSpecific,
+          const calculatedStatus =
+            determineResultStatus(
+              updatedRow,
+              'Not specified'
+            )
 
-                demographicFallback:
-                  referenceData.demographicFallback
+          return {
+            ...updatedRow,
 
-              }
-
-              const calculatedStatus =
-                determineResultStatus(
-                  updatedRow,
-                  'Not specified'
-                )
-
-              return {
-
-                ...updatedRow,
-
-                status:
-                  row.status ===
-                    'Not specified'
-                    ? calculatedStatus
-                    : row.status
-
-              }
-
-            }
-          )
+            status:
+              row.status ===
+                'Not specified'
+                ? calculatedStatus
+                : row.status
+          }
+        })
       )
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1608,9 +1999,7 @@ export function ResultEntry() {
 
   const handleSaveResults =
     () => {
-
       try {
-
         setSaving(true)
 
         saveResultsForOrder(
@@ -1631,9 +2020,7 @@ export function ResultEntry() {
         showToast(
           'Results saved successfully'
         )
-
       } catch (error) {
-
         console.error(
           'Failed to save results:',
           error
@@ -1642,15 +2029,10 @@ export function ResultEntry() {
         showToast(
           'Failed to save results'
         )
-
       } finally {
-
         setSaving(false)
-
       }
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1671,27 +2053,19 @@ export function ResultEntry() {
       if (
         missingResults.length > 0
       ) {
-
         return {
-
           valid: false,
 
           message:
             `Please enter results for ${missingResults.length} parameter(s) before generating the report.`
-
         }
-
       }
 
       return {
-
         valid: true,
         message: ''
-
       }
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1705,7 +2079,6 @@ export function ResultEntry() {
         validateResults()
 
       if (!validation.valid) {
-
         showToast(
           validation.message
         )
@@ -1714,7 +2087,6 @@ export function ResultEntry() {
       }
 
       try {
-
         setGenerating(true)
 
         saveResultsForOrder(
@@ -1728,7 +2100,6 @@ export function ResultEntry() {
           )
 
         if (!report) {
-
           const reportId =
             generateReportId({
               preview: false
@@ -1736,28 +2107,20 @@ export function ResultEntry() {
 
           report =
             saveReport({
-
-              id:
-                reportId,
-
+              id: reportId,
               orderId:
                 order.id,
-
               patientId:
                 patient.id,
-
               createdAt:
                 new Date().toISOString()
-
             })
-
         }
 
         updateOrder(
           order.id,
           {
-            status:
-              'Reported'
+            status: 'Reported'
           }
         )
 
@@ -1770,9 +2133,7 @@ export function ResultEntry() {
         navigate(
           `/print/report/${order.id}`
         )
-
       } catch (error) {
-
         console.error(
           'Failed to generate report:',
           error
@@ -1781,15 +2142,10 @@ export function ResultEntry() {
         showToast(
           'Failed to generate report'
         )
-
       } finally {
-
         setGenerating(false)
-
       }
-
     }
-
 
 
   // --------------------------------------------------------------------------
@@ -1800,16 +2156,12 @@ export function ResultEntry() {
     useMemo(
       () =>
         rows.reduce(
-          (
-            groups,
-            row
-          ) => {
+          (groups, row) => {
 
             if (
               !groups[row.testId]
             ) {
-              groups[row.testId] =
-                []
+              groups[row.testId] = []
             }
 
             groups[
@@ -1817,13 +2169,11 @@ export function ResultEntry() {
             ].push(row)
 
             return groups
-
           },
           {}
         ),
       [rows]
     )
-
 
 
   // --------------------------------------------------------------------------
@@ -1877,25 +2227,15 @@ export function ResultEntry() {
         ).length
 
       return {
-
         total: rows.length,
-
         completed,
-
         normal,
-
         high,
-
         low,
-
         positive,
-
         abnormal
-
       }
-
     }, [rows])
-
 
 
   // --------------------------------------------------------------------------
@@ -1903,56 +2243,36 @@ export function ResultEntry() {
   // --------------------------------------------------------------------------
 
   return (
-
     <>
-
-      {/* ======================================================================
-          HEADER
-      ======================================================================= */}
-
       <div className="page-header">
-
         <div>
-
           <h2>
             Enter Test Results
           </h2>
 
           <p className="subtitle">
-
             Order{' '}
 
             <span className="mono">
               {order.id}
             </span>
-
           </p>
-
         </div>
 
-
-
         <div className="page-actions">
-
           <Link
             to={`/patients/${patient.id}`}
             className="btn btn-outline"
           >
             ← Patient
           </Link>
-
         </div>
-
       </div>
 
 
-
-      {/* ======================================================================
-          PATIENT INFORMATION
-      ======================================================================= */}
+      {/* PATIENT INFORMATION */}
 
       <div className="card card-pad">
-
         <div className="form-grid">
 
           <InfoField
@@ -1992,14 +2312,10 @@ export function ResultEntry() {
           />
 
         </div>
-
       </div>
 
 
-
-      {/* ======================================================================
-          RESULT SUMMARY
-      ======================================================================= */}
+      {/* SUMMARY */}
 
       <div className="result-summary-grid">
 
@@ -2036,17 +2352,13 @@ export function ResultEntry() {
       </div>
 
 
-
-      {/* ======================================================================
-          RESULTS
-      ======================================================================= */}
+      {/* RESULTS */}
 
       <div className="card mt-24">
 
         <div className="card-header">
 
           <div>
-
             <h3>
               Test Results
             </h3>
@@ -2057,10 +2369,9 @@ export function ResultEntry() {
                 marginTop: 4
               }}
             >
-              Units and reference ranges are loaded from the laboratory
-              master list. Numeric results can be automatically classified.
+              Units and normal ranges are automatically loaded
+              from the laboratory master list.
             </p>
-
           </div>
 
           <button
@@ -2068,7 +2379,8 @@ export function ResultEntry() {
             className="btn btn-outline btn-sm"
             onClick={() =>
               setShowNotes(
-                current => !current
+                current =>
+                  !current
               )
             }
           >
@@ -2080,18 +2392,16 @@ export function ResultEntry() {
         </div>
 
 
-
         <div className="table-wrap">
 
           <table className="data-table">
 
             <thead>
-
               <tr>
 
                 <th
                   style={{
-                    width: '18%'
+                    width: '22%'
                   }}
                 >
                   Test / Parameter
@@ -2124,9 +2434,7 @@ export function ResultEntry() {
                 )}
 
               </tr>
-
             </thead>
-
 
 
             <tbody>
@@ -2140,12 +2448,9 @@ export function ResultEntry() {
                     testRows
                   ]
                 ) => (
-
                   <TestGroup
                     key={testId}
-                    rows={
-                      testRows
-                    }
+                    rows={testRows}
                     updateRow={
                       updateRow
                     }
@@ -2159,7 +2464,6 @@ export function ResultEntry() {
                       showNotes
                     }
                   />
-
                 )
               )}
 
@@ -2170,10 +2474,7 @@ export function ResultEntry() {
         </div>
 
 
-
-        {/* ====================================================================
-            REFERENCE RANGE NOTICE
-        ===================================================================== */}
+        {/* NOTICE */}
 
         <div className="card-pad">
 
@@ -2203,8 +2504,6 @@ export function ResultEntry() {
               Reference Range Notice
             </div>
 
-
-
             <div
               className="text-sm text-muted"
               style={{
@@ -2212,30 +2511,29 @@ export function ResultEntry() {
                 lineHeight: 1.5
               }}
             >
-
-              The normal ranges shown here come from the supplied
-              Laboratory Test Master List and represent commonly-used
-              adult ranges. Some tests are assay, kit, analyzer or
-              method specific.
+              The units and normal ranges shown in this
+              result-entry screen are loaded from the
+              supplied Laboratory Test Master List.
 
               <br />
 
-              Male, Female and Child profiles are available for
-              demographic selection, but separate verified
-              demographic ranges were not provided in the master list.
-              Until your laboratory configures those ranges, the
-              supplied master-list range is used as a fallback and the
-              row is marked for verification.
+              Adult ranges are used as the default supplied
+              ranges. Some tests such as Widal, HBsAg, HCV,
+              HIV, Troponin and CK-MB may be assay, kit,
+              analyzer or method specific.
 
+              <br />
+
+              Male, Female and Child profiles are available.
+              Because separate verified demographic ranges
+              were not supplied, the master-list range is
+              used as the fallback.
             </div>
 
           </div>
 
 
-
-          {/* ================================================================
-              ACTIONS
-          ================================================================ */}
+          {/* ACTIONS */}
 
           <div className="flex gap-12">
 
@@ -2250,7 +2548,6 @@ export function ResultEntry() {
                 ? 'Saving...'
                 : 'Save Results'}
             </button>
-
 
 
             <button
@@ -2270,12 +2567,9 @@ export function ResultEntry() {
         </div>
 
       </div>
-
     </>
-
   )
 }
-
 
 
 // ============================================================================
@@ -2289,11 +2583,8 @@ function TestGroup({
   changeReferenceProfile,
   showNotes
 }) {
-
   return (
-
     <>
-
       {rows.map(
         (
           row,
@@ -2312,7 +2603,6 @@ function TestGroup({
             )
 
           return (
-
             <tr
               key={row.id}
               style={
@@ -2325,49 +2615,31 @@ function TestGroup({
               }
             >
 
-              {/* ==============================================================
-                  TEST / PARAMETER
-              =============================================================== */}
+              {/* TEST / PARAMETER */}
 
               <td>
 
                 <div
                   style={{
-                    fontWeight:
-                      index === 0 &&
-                      rows.length > 1
-                        ? 700
-                        : 600
+                    fontWeight: 600
                   }}
                 >
-
-                  {index === 0 &&
-                  rows.length > 1
-                    ? row.testName
-                    : row.name}
-
+                  {row.name}
                 </div>
 
-
-
-                {rows.length > 1 &&
-                  index === 0 && (
-
-                    <div
-                      className="text-sm text-muted"
-                      style={{
-                        marginTop: 3
-                      }}
-                    >
-                      {row.name}
-                    </div>
-
-                  )}
-
-
+                {index === 0 && (
+                  <div
+                    className="text-sm text-muted"
+                    style={{
+                      marginTop: 3,
+                      fontWeight: 600
+                    }}
+                  >
+                    {row.testName}
+                  </div>
+                )}
 
                 {row.labSpecific && (
-
                   <div
                     style={{
                       marginTop: 4,
@@ -2379,13 +2651,9 @@ function TestGroup({
                   >
                     Lab / Method Specific
                   </div>
-
                 )}
 
-
-
                 {row.demographicFallback && (
-
                   <div
                     style={{
                       marginTop: 3,
@@ -2395,18 +2663,14 @@ function TestGroup({
                       fontWeight: 500
                     }}
                   >
-                    Demographic range: verify with lab
+                    Master-list range used
                   </div>
-
                 )}
 
               </td>
 
 
-
-              {/* ==============================================================
-                  RESULT
-              =============================================================== */}
+              {/* RESULT */}
 
               <td>
 
@@ -2414,7 +2678,6 @@ function TestGroup({
                   value={
                     row.result || ''
                   }
-
                   placeholder={
                     row.referenceRange ===
                     'Negative'
@@ -2424,7 +2687,6 @@ function TestGroup({
                         ? 'e.g. Non-reactive'
                         : 'Enter result'
                   }
-
                   onChange={
                     event =>
                       updateRow(
@@ -2433,7 +2695,6 @@ function TestGroup({
                         event.target.value
                       )
                   }
-
                   style={{
                     minWidth: 120
                   }}
@@ -2442,41 +2703,35 @@ function TestGroup({
               </td>
 
 
-
-              {/* ==============================================================
-                  UNIT
-              =============================================================== */}
+              {/* UNIT */}
 
               <td>
 
-                <input
-                  value={
-                    row.unit || ''
-                  }
-
-                  onChange={
-                    event =>
-                      updateRow(
-                        row.id,
-                        'unit',
-                        event.target.value
-                      )
-                  }
-
-                  placeholder="Unit"
-
+                <div
                   style={{
-                    width: 115
+                    minWidth: 95,
+                    fontWeight: 600,
+                    color:
+                      'var(--navy-800)',
+                    background:
+                      'var(--gray-50)',
+                    border:
+                      '1px solid var(--gray-200)',
+                    borderRadius:
+                      'var(--radius-sm)',
+                    padding:
+                      '9px 10px',
+                    whiteSpace:
+                      'nowrap'
                   }}
-                />
+                >
+                  {row.unit || '—'}
+                </div>
 
               </td>
 
 
-
-              {/* ==============================================================
-                  REFERENCE PROFILE
-              =============================================================== */}
+              {/* PROFILE */}
 
               <td>
 
@@ -2485,7 +2740,6 @@ function TestGroup({
                     row.referenceProfile ||
                     'Auto'
                   }
-
                   onChange={
                     event =>
                       changeReferenceProfile(
@@ -2493,7 +2747,6 @@ function TestGroup({
                         event.target.value
                       )
                   }
-
                   style={{
                     minWidth: 125
                   }}
@@ -2501,7 +2754,6 @@ function TestGroup({
 
                   {REFERENCE_PROFILES.map(
                     profile => (
-
                       <option
                         key={
                           profile.value
@@ -2512,17 +2764,13 @@ function TestGroup({
                       >
                         {profile.label}
                       </option>
-
                     )
                   )}
 
                 </select>
 
-
-
                 {row.referenceProfile ===
                   'Auto' && (
-
                   <div
                     style={{
                       marginTop: 4,
@@ -2533,65 +2781,41 @@ function TestGroup({
                   >
                     Based on patient
                   </div>
-
                 )}
 
               </td>
 
 
-
-              {/* ==============================================================
-                  NORMAL RANGE
-              =============================================================== */}
+              {/* NORMAL RANGE */}
 
               <td>
 
-                <input
-                  value={
-                    row.referenceRange ||
-                    ''
-                  }
-
-                  onChange={
-                    event =>
-                      updateRow(
-                        row.id,
-                        'referenceRange',
-                        event.target.value
-                      )
-                  }
-
-                  placeholder="Reference range"
-
+                <div
                   style={{
-                    minWidth: 135
+                    minWidth: 120,
+                    fontWeight: 600,
+                    color:
+                      'var(--navy-800)',
+                    background:
+                      'var(--gray-50)',
+                    border:
+                      '1px solid var(--gray-200)',
+                    borderRadius:
+                      'var(--radius-sm)',
+                    padding:
+                      '9px 10px',
+                    whiteSpace:
+                      'nowrap'
                   }}
-                />
-
-
-
-                {row.demographicFallback && (
-
-                  <div
-                    style={{
-                      marginTop: 4,
-                      fontSize: 10,
-                      color:
-                        'var(--gray-500)'
-                    }}
-                  >
-                    Master-list range shown
-                  </div>
-
-                )}
+                >
+                  {row.referenceRange ||
+                    'Lab-specific / Verify'}
+                </div>
 
               </td>
 
 
-
-              {/* ==============================================================
-                  STATUS
-              =============================================================== */}
+              {/* STATUS */}
 
               <td>
 
@@ -2600,7 +2824,6 @@ function TestGroup({
                     row.status ||
                     'Not specified'
                   }
-
                   onChange={
                     event =>
                       updateStatus(
@@ -2608,11 +2831,9 @@ function TestGroup({
                         event.target.value
                       )
                   }
-
                   className={
                     statusClass
                   }
-
                   style={{
                     minWidth: 115
                   }}
@@ -2620,55 +2841,29 @@ function TestGroup({
 
                   {RESULT_STATUS_OPTIONS.map(
                     status => (
-
                       <option
                         key={status}
                         value={status}
                       >
                         {status}
                       </option>
-
                     )
                   )}
 
                 </select>
 
-
-
-                {row.result &&
-                  row.status ===
-                    'Not specified' && (
-
-                  <div
-                    style={{
-                      marginTop: 4,
-                      fontSize: 9.5,
-                      color:
-                        'var(--gray-500)'
-                    }}
-                  >
-                    Enter or select status
-                  </div>
-
-                )}
-
               </td>
 
 
-
-              {/* ==============================================================
-                  NOTES
-              =============================================================== */}
+              {/* NOTES */}
 
               {showNotes && (
-
                 <td>
 
                   <textarea
                     value={
                       row.notes || ''
                     }
-
                     onChange={
                       event =>
                         updateRow(
@@ -2677,34 +2872,25 @@ function TestGroup({
                           event.target.value
                         )
                     }
-
                     placeholder="Optional note"
-
                     rows={2}
-
                     style={{
                       minWidth: 160,
-                      resize: 'vertical'
+                      resize:
+                        'vertical'
                     }}
                   />
 
                 </td>
-
               )}
 
             </tr>
-
           )
-
         }
-
       )}
-
     </>
-
   )
 }
-
 
 
 // ============================================================================
@@ -2716,9 +2902,7 @@ function InfoField({
   value,
   mono
 }) {
-
   return (
-
     <div className="form-field">
 
       <label
@@ -2736,15 +2920,12 @@ function InfoField({
         {label}
       </label>
 
-
-
       <div
         className={
           mono
             ? 'mono'
             : ''
         }
-
         style={{
           fontSize: 13.5,
           fontWeight: 600
@@ -2754,10 +2935,8 @@ function InfoField({
       </div>
 
     </div>
-
   )
 }
-
 
 
 // ============================================================================
@@ -2768,13 +2947,12 @@ function SummaryCard({
   label,
   value
 }) {
-
   return (
-
     <div
       className="card"
       style={{
-        padding: '14px 16px'
+        padding:
+          '14px 16px'
       }}
     >
 
@@ -2793,8 +2971,6 @@ function SummaryCard({
         {label}
       </div>
 
-
-
       <div
         style={{
           fontSize: 22,
@@ -2808,6 +2984,5 @@ function SummaryCard({
       </div>
 
     </div>
-
   )
 }
