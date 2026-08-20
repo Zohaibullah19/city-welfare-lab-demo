@@ -81,204 +81,125 @@ const REFERENCE_PROFILES = [
 // ============================================================================
 
 const LAB_TEST_MASTER = [
-
-  // --------------------------------------------------------------------------
   // LIPID PROFILE
-  // --------------------------------------------------------------------------
-
   {
     category: 'Lipid Profile',
     parameter: 'Total Cholesterol',
-    aliases: [
-      'Cholesterol',
-      'Total Cholesterol'
-    ],
+    aliases: ['Cholesterol', 'Total Cholesterol'],
     unit: 'mg/dL',
     normalRange: '0–200',
     labSpecific: false
   },
-
   {
     category: 'Lipid Profile',
     parameter: 'Triglycerides',
-    aliases: [
-      'Triglycerides',
-      'Triglycerides (TG)',
-      'TG'
-    ],
+    aliases: ['Triglycerides', 'Triglycerides (TG)', 'TG'],
     unit: 'mg/dL',
     normalRange: '0–150',
     labSpecific: false
   },
-
   {
     category: 'Lipid Profile',
     parameter: 'HDL',
-    aliases: [
-      'HDL'
-    ],
+    aliases: ['HDL'],
     unit: 'mg/dL',
     normalRange: '40–60',
     labSpecific: false
   },
-
   {
     category: 'Lipid Profile',
     parameter: 'LDL',
-    aliases: [
-      'LDL'
-    ],
+    aliases: ['LDL'],
     unit: 'mg/dL',
     normalRange: '0–100',
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // RFT
-  // --------------------------------------------------------------------------
-
   {
     category: 'RFT',
     parameter: 'Urea',
-    aliases: [
-      'Urea'
-    ],
+    aliases: ['Urea'],
     unit: 'mg/dL',
     normalRange: '15–45',
     labSpecific: false
   },
-
   {
     category: 'RFT',
     parameter: 'Creatinine',
-    aliases: [
-      'Creatinine'
-    ],
+    aliases: ['Creatinine'],
     unit: 'mg/dL',
     normalRange: '0.6–1.3',
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // LFT
-  // --------------------------------------------------------------------------
-
   {
     category: 'LFT',
     parameter: 'ALT / SGPT',
-    aliases: [
-      'ALT',
-      'ALT / SGPT',
-      'SGPT'
-    ],
+    aliases: ['ALT', 'ALT / SGPT', 'SGPT'],
     unit: 'U/L',
     normalRange: '4–36',
     labSpecific: false
   },
-
   {
     category: 'LFT',
     parameter: 'ALP',
-    aliases: [
-      'ALP',
-      'Alkaline Phosphatase'
-    ],
+    aliases: ['ALP', 'Alkaline Phosphatase'],
     unit: 'U/L',
     normalRange: '20–130',
     labSpecific: false
   },
-
   {
     category: 'LFT',
     parameter: 'Total Bilirubin',
-    aliases: [
-      'Total Bilirubin',
-      'Bilirubin',
-      'SBR'
-    ],
+    aliases: ['Total Bilirubin', 'Bilirubin', 'SBR'],
     unit: 'mg/dL',
     normalRange: '0.1–1.2',
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // ABGs
-  // --------------------------------------------------------------------------
-
   {
     category: 'ABGs',
     parameter: 'pH',
-    aliases: [
-      'pH'
-    ],
+    aliases: ['pH'],
     unit: '—',
     normalRange: '7.35–7.45',
     labSpecific: false
   },
-
   {
     category: 'ABGs',
     parameter: 'PCO₂',
-    aliases: [
-      'PCO',
-      'PCO₂',
-      'pCO₂',
-      'pCO2',
-      'pCO'
-    ],
+    aliases: ['PCO', 'PCO₂', 'pCO₂', 'pCO2', 'pCO'],
     unit: 'mmHg',
     normalRange: '35–45',
     labSpecific: false
   },
-
   {
     category: 'ABGs',
     parameter: 'PO₂',
-    aliases: [
-      'PO',
-      'PO₂',
-      'pO₂',
-      'pO2',
-      'pO'
-    ],
+    aliases: ['PO', 'PO₂', 'pO₂', 'pO2', 'pO'],
     unit: 'mmHg',
     normalRange: '80–100',
     labSpecific: false
   },
-
   {
     category: 'ABGs',
     parameter: 'HCO₃',
-    aliases: [
-      'HCO₃',
-      'HCO3',
-      'HCO₃⁻',
-      'Bicarbonate'
-    ],
+    aliases: ['HCO₃', 'HCO3', 'HCO₃⁻', 'Bicarbonate'],
     unit: 'mmol/L',
     normalRange: '22–26',
     labSpecific: false
   },
-
   {
     category: 'ABGs',
     parameter: 'Base Excess / Deficit',
-    aliases: [
-      'Base Excess / Deficit',
-      'Base Excess',
-      'Base Deficit'
-    ],
+    aliases: ['Base Excess / Deficit', 'Base Excess', 'Base Deficit'],
     unit: 'mmol/L',
     normalRange: '−2 to +2',
     labSpecific: false
   },
-
   {
     category: 'ABGs',
     parameter: 'O₂ Saturation',
@@ -293,12 +214,7 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // ELECTROLYTES
-  // --------------------------------------------------------------------------
-
   {
     category: 'Electrolytes',
     parameter: 'Sodium (Na⁺)',
@@ -313,7 +229,6 @@ const LAB_TEST_MASTER = [
     normalRange: '135–145',
     labSpecific: false
   },
-
   {
     category: 'Electrolytes',
     parameter: 'Potassium (K⁺)',
@@ -328,7 +243,6 @@ const LAB_TEST_MASTER = [
     normalRange: '3.5–5.2',
     labSpecific: false
   },
-
   {
     category: 'Electrolytes',
     parameter: 'Chloride (Cl⁻)',
@@ -344,12 +258,7 @@ const LAB_TEST_MASTER = [
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // INFECTIOUS / SEROLOGY
-  // --------------------------------------------------------------------------
-
   {
     category: 'Infectious / Serology',
     parameter: 'Malaria Parasite (MP)',
@@ -363,209 +272,136 @@ const LAB_TEST_MASTER = [
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Dengue NS1',
-    aliases: [
-      'Dengue NS1'
-    ],
+    aliases: ['Dengue NS1'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Dengue IgG',
-    aliases: [
-      'Dengue IgG'
-    ],
+    aliases: ['Dengue IgG'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Dengue IgM',
-    aliases: [
-      'Dengue IgM'
-    ],
+    aliases: ['Dengue IgM'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Typhoid IgG',
-    aliases: [
-      'Typhoid IgG'
-    ],
+    aliases: ['Typhoid IgG'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Typhoid IgM',
-    aliases: [
-      'Typhoid IgM'
-    ],
+    aliases: ['Typhoid IgM'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'Widal TO/TH',
-    aliases: [
-      'Widal TO/TH',
-      'Widal TO/TI',
-      'Widal TO',
-      'Widal TH',
-      'Widal'
-    ],
+    aliases: ['Widal TO/TH', 'Widal TO/TI', 'Widal TO', 'Widal TH', 'Widal'],
     unit: 'Titer',
     normalRange: 'Lab-specific',
     labSpecific: true
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'HBsAg by ELISA',
-    aliases: [
-      'HBsAg by ELISA',
-      'HBs by ELISA',
-      'HBsAg'
-    ],
+    aliases: ['HBsAg by ELISA', 'HBs by ELISA', 'HBsAg'],
     unit: '—',
     normalRange: 'Non-reactive',
     labSpecific: true
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'HCV by ELISA',
-    aliases: [
-      'HCV by ELISA',
-      'HCV'
-    ],
+    aliases: ['HCV by ELISA', 'HCV'],
     unit: '—',
     normalRange: 'Non-reactive',
     labSpecific: true
   },
-
   {
     category: 'Infectious / Serology',
     parameter: 'HIV by ELISA',
-    aliases: [
-      'HIV by ELISA',
-      'HIV'
-    ],
+    aliases: ['HIV by ELISA', 'HIV'],
     unit: '—',
     normalRange: 'Non-reactive',
     labSpecific: true
   },
 
-
-
-  // --------------------------------------------------------------------------
   // OTHER LABORATORY
-  // --------------------------------------------------------------------------
-
   {
     category: 'Other Laboratory',
     parameter: 'HbA1c',
-    aliases: [
-      'HbA1c',
-      'Hb A1c',
-      'Glycated Hemoglobin'
-    ],
+    aliases: ['HbA1c', 'Hb A1c', 'Glycated Hemoglobin'],
     unit: '%',
     normalRange: '<5.7',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'Stool R/E',
-    aliases: [
-      'Stool R/E',
-      'Stool RE',
-      'Stool Examination'
-    ],
+    aliases: ['Stool R/E', 'Stool RE', 'Stool Examination'],
     unit: '—',
     normalRange: 'Normal findings',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'Urine Culture / C/S',
-    aliases: [
-      'Urine Culture',
-      'Urine Culture / C/S',
-      'Urine C/S'
-    ],
+    aliases: ['Urine Culture', 'Urine Culture / C/S', 'Urine C/S'],
     unit: '—',
     normalRange: 'No growth',
     labSpecific: true
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'Blood Culture / C/S',
-    aliases: [
-      'Blood Culture',
-      'Blood Culture / C/S',
-      'Blood C/S'
-    ],
+    aliases: ['Blood Culture', 'Blood Culture / C/S', 'Blood C/S'],
     unit: '—',
     normalRange: 'No growth',
     labSpecific: true
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'PCR',
-    aliases: [
-      'PCR'
-    ],
+    aliases: ['PCR'],
     unit: '—',
     normalRange: 'Not detected',
     labSpecific: true
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'Blood Ketones',
-    aliases: [
-      'Ketone Blood',
-      'Blood Ketones',
-      'Blood Ketone'
-    ],
+    aliases: ['Ketone Blood', 'Blood Ketones', 'Blood Ketone'],
     unit: 'mmol/L',
     normalRange: '<0.6',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'Urine Ketones',
-    aliases: [
-      'Ketone Urine',
-      'Urine Ketones',
-      'Urine Ketone'
-    ],
+    aliases: ['Ketone Urine', 'Urine Ketones', 'Urine Ketone'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'RA Factor / Rheumatoid Factor',
@@ -578,140 +414,90 @@ const LAB_TEST_MASTER = [
     normalRange: '<15',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'ASO Titer',
-    aliases: [
-      'ASO Titer',
-      'ASO'
-    ],
+    aliases: ['ASO Titer', 'ASO'],
     unit: 'IU/mL',
     normalRange: '<200',
     labSpecific: false
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'ANA',
-    aliases: [
-      'ANA'
-    ],
+    aliases: ['ANA'],
     unit: '—',
     normalRange: 'Negative',
     labSpecific: true
   },
-
   {
     category: 'Other Laboratory',
     parameter: 'CRP',
-    aliases: [
-      'CRP',
-      'C-Reactive Protein'
-    ],
+    aliases: ['CRP', 'C-Reactive Protein'],
     unit: 'mg/L',
     normalRange: '<3',
     labSpecific: false
   },
 
-
-
-  // --------------------------------------------------------------------------
   // CARDIAC
-  // --------------------------------------------------------------------------
-
   {
     category: 'Cardiac',
     parameter: 'Troponin-I',
-    aliases: [
-      'Troponin-I',
-      'Troponin I',
-      'Troponin-I (TnI)'
-    ],
-    unit: 'ng/L',
+    aliases: ['Troponin-I', 'Troponin I', 'Troponin-I (TnI)'],
+    unit: 'ng/L or ng/mL',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
-
   {
     category: 'Cardiac',
     parameter: 'Troponin-T',
-    aliases: [
-      'Troponin-T',
-      'Troponin T',
-      'Troponin-T (TnT)'
-    ],
+    aliases: ['Troponin-T', 'Troponin T', 'Troponin-T (TnT)'],
     unit: 'ng/L',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
-
   {
     category: 'Cardiac',
     parameter: 'CK-MB',
-    aliases: [
-      'CK-MB',
-      'CK MB',
-      'CKMB'
-    ],
-    unit: 'ng/mL',
+    aliases: ['CK-MB', 'CK MB', 'CKMB'],
+    unit: 'ng/mL or U/L',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
 
-
-
-  // --------------------------------------------------------------------------
   // ADDITIONAL BIOCHEMISTRY
-  // --------------------------------------------------------------------------
-
   {
     category: 'Additional Biochemistry',
     parameter: 'Albumin',
-    aliases: [
-      'Albumin'
-    ],
+    aliases: ['Albumin'],
     unit: 'g/dL',
     normalRange: '3.4–5.4',
     labSpecific: false
   },
-
   {
     category: 'Additional Biochemistry',
     parameter: 'Total Bilirubin',
-    aliases: [
-      'Total Bilirubin',
-      'Bilirubin Total'
-    ],
+    aliases: ['Total Bilirubin', 'Bilirubin Total'],
     unit: 'mg/dL',
     normalRange: '0.1–1.2',
     labSpecific: false
   },
-
   {
     category: 'Additional Biochemistry',
     parameter: 'Direct Bilirubin',
-    aliases: [
-      'Direct Bilirubin',
-      'Bilirubin Direct'
-    ],
+    aliases: ['Direct Bilirubin', 'Bilirubin Direct'],
     unit: 'mg/dL',
     normalRange: '<0.3',
     labSpecific: false
   },
-
   {
     category: 'Additional Biochemistry',
     parameter: 'Indirect Bilirubin',
-    aliases: [
-      'Indirect Bilirubin',
-      'Bilirubin Indirect'
-    ],
+    aliases: ['Indirect Bilirubin', 'Bilirubin Indirect'],
     unit: 'mg/dL',
     normalRange: '0.2–0.9',
     labSpecific: false
   }
-
 ]
 
 
@@ -1186,13 +972,15 @@ function buildInitialRows(
           referenceProfile:
             savedProfile,
 
-          unit:
-            row.unit ||
-            referenceData.unit,
+         unit:
+  referenceData.unit ||
+  row.unit ||
+  '',
 
-          referenceRange:
-            row.referenceRange ||
-            referenceData.referenceRange,
+referenceRange:
+  referenceData.referenceRange ||
+  row.referenceRange ||
+  'Lab-specific / Verify',
 
           status,
 
