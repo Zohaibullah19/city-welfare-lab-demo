@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import EmptyState from '../components/EmptyState'
+
 import StatusBadge from '../components/StatusBadge'
 
 import {
@@ -18,8 +20,11 @@ import {
 } from '../services/storage'
 
 import { formatDate } from '../utils/format'
+
 import { useToast } from '../context/ToastContext'
+
 import { useAppData } from '../context/AppDataContext'
+
 
 
 // ============================================================================
@@ -35,6 +40,7 @@ const RESULT_STATUS_OPTIONS = [
   'Positive',
   'Negative'
 ]
+
 
 
 // ============================================================================
@@ -67,6 +73,7 @@ const REFERENCE_PROFILES = [
     label: 'Other / Lab Specific'
   }
 ]
+
 
 
 // ============================================================================
@@ -127,6 +134,7 @@ const LAB_TEST_MASTER = [
   },
 
 
+
   // --------------------------------------------------------------------------
   // RFT
   // --------------------------------------------------------------------------
@@ -152,6 +160,7 @@ const LAB_TEST_MASTER = [
     normalRange: '0.6–1.3',
     labSpecific: false
   },
+
 
 
   // --------------------------------------------------------------------------
@@ -195,6 +204,7 @@ const LAB_TEST_MASTER = [
     normalRange: '0.1–1.2',
     labSpecific: false
   },
+
 
 
   // --------------------------------------------------------------------------
@@ -284,6 +294,7 @@ const LAB_TEST_MASTER = [
   },
 
 
+
   // --------------------------------------------------------------------------
   // ELECTROLYTES
   // --------------------------------------------------------------------------
@@ -332,6 +343,7 @@ const LAB_TEST_MASTER = [
     normalRange: '98–107',
     labSpecific: false
   },
+
 
 
   // --------------------------------------------------------------------------
@@ -458,6 +470,7 @@ const LAB_TEST_MASTER = [
     normalRange: 'Non-reactive',
     labSpecific: true
   },
+
 
 
   // --------------------------------------------------------------------------
@@ -602,6 +615,7 @@ const LAB_TEST_MASTER = [
   },
 
 
+
   // --------------------------------------------------------------------------
   // CARDIAC
   // --------------------------------------------------------------------------
@@ -614,7 +628,7 @@ const LAB_TEST_MASTER = [
       'Troponin I',
       'Troponin-I (TnI)'
     ],
-    unit: 'ng/L or ng/mL',
+    unit: 'ng/L',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
@@ -640,10 +654,11 @@ const LAB_TEST_MASTER = [
       'CK MB',
       'CKMB'
     ],
-    unit: 'ng/mL or U/L',
+    unit: 'ng/mL',
     normalRange: 'Assay-specific',
     labSpecific: true
   },
+
 
 
   // --------------------------------------------------------------------------
@@ -696,7 +711,9 @@ const LAB_TEST_MASTER = [
     normalRange: '0.2–0.9',
     labSpecific: false
   }
+
 ]
+
 
 
 // ============================================================================
@@ -710,6 +727,7 @@ function normalizeParameter(value) {
     .replace(/⁺|⁻/g, '')
     .replace(/[^a-z0-9]+/g, '')
 }
+
 
 
 // ============================================================================
@@ -748,6 +766,7 @@ function findMasterParameter(name) {
 }
 
 
+
 // ============================================================================
 // AUTOMATIC PROFILE
 // ============================================================================
@@ -781,6 +800,7 @@ function getAutomaticProfile(patient) {
 
   return 'Adult'
 }
+
 
 
 // ============================================================================
@@ -826,6 +846,7 @@ function getReferenceData(masterParameter, profile) {
     demographicFallback: false
   }
 }
+
 
 
 // ============================================================================
@@ -900,6 +921,7 @@ function parseReferenceRange(range) {
 }
 
 
+
 // ============================================================================
 // NORMALIZE NUMERIC RESULT
 // ============================================================================
@@ -933,6 +955,7 @@ function parseNumericResult(result) {
     ? number
     : null
 }
+
 
 
 // ============================================================================
@@ -982,6 +1005,7 @@ function calculateNumericStatus(
 
   return null
 }
+
 
 
 // ============================================================================
@@ -1052,6 +1076,7 @@ function calculateTextStatus(
 }
 
 
+
 // ============================================================================
 // DETERMINE RESULT STATUS
 // ============================================================================
@@ -1091,6 +1116,7 @@ function determineResultStatus(
 }
 
 
+
 // ============================================================================
 // BUILD INITIAL ROWS
 // ============================================================================
@@ -1114,7 +1140,6 @@ function buildInitialRows(
   ) {
     return existingResults.map(
       (row, index) => {
-
         const masterParameter =
           findMasterParameter(row.name) ||
           findMasterParameter(row.testName)
@@ -1187,6 +1212,7 @@ function buildInitialRows(
   }
 
 
+
   // --------------------------------------------------------------------------
   // Fresh rows
   // --------------------------------------------------------------------------
@@ -1195,14 +1221,12 @@ function buildInitialRows(
 
   ;(order.tests || []).forEach(
     testInOrder => {
-
       const masterParameter =
         findMasterParameter(
           testInOrder.name
         )
 
       if (masterParameter) {
-
         const referenceData =
           getReferenceData(
             masterParameter,
@@ -1210,7 +1234,6 @@ function buildInitialRows(
           )
 
         rows.push({
-
           id:
             `${testInOrder.testId}-0`,
 
@@ -1251,9 +1274,7 @@ function buildInitialRows(
         return
       }
 
-
       rows.push({
-
         id:
           `${testInOrder.testId}-0`,
 
@@ -1297,6 +1318,7 @@ function buildInitialRows(
 }
 
 
+
 // ============================================================================
 // RESULT STATUS CLASS
 // ============================================================================
@@ -1327,12 +1349,12 @@ function getResultStatusClass(status) {
 }
 
 
+
 // ============================================================================
 // RESULTS LIST
 // ============================================================================
 
 export function ResultsList() {
-
   useAppData()
 
   const orders =
@@ -1375,6 +1397,7 @@ export function ResultsList() {
         </div>
 
       </div>
+
 
 
       <div className="card">
@@ -1426,6 +1449,7 @@ export function ResultsList() {
               </thead>
 
 
+
               <tbody>
 
                 {pending.map(order => {
@@ -1462,17 +1486,21 @@ export function ResultsList() {
                       </td>
 
                       <td>
+
                         <StatusBadge
                           status={
                             order.status
                           }
                         />
+
                       </td>
 
                       <td className="cell-muted">
+
                         {formatDate(
                           order.createdAt
                         )}
+
                       </td>
 
                       <td>
@@ -1504,6 +1532,7 @@ export function ResultsList() {
     </>
   )
 }
+
 
 
 // ============================================================================
@@ -1561,6 +1590,7 @@ export function ResultEntry() {
     useState(false)
 
 
+
   // --------------------------------------------------------------------------
   // Refresh rows if order changes
   // --------------------------------------------------------------------------
@@ -1576,6 +1606,7 @@ export function ResultEntry() {
     )
 
   }, [orderId])
+
 
 
   // --------------------------------------------------------------------------
@@ -1604,6 +1635,7 @@ export function ResultEntry() {
   }
 
 
+
   // --------------------------------------------------------------------------
   // UPDATE ROW
   // --------------------------------------------------------------------------
@@ -1630,6 +1662,7 @@ export function ResultEntry() {
 
               // Automatically determine status
               // when result or reference range changes.
+
               if (
                 field === 'result' ||
                 field === 'referenceRange'
@@ -1647,16 +1680,22 @@ export function ResultEntry() {
                   field ===
                     'referenceRange'
                 ) {
+
                   updated.status =
                     calculatedStatus
+
                 }
+
               }
 
               return updated
+
             }
           )
       )
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1678,7 +1717,9 @@ export function ResultEntry() {
                 : row
           )
       )
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1764,10 +1805,13 @@ export function ResultEntry() {
                     : row.status
 
               }
+
             }
           )
       )
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1816,7 +1860,9 @@ export function ResultEntry() {
         setSaving(false)
 
       }
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1839,18 +1885,25 @@ export function ResultEntry() {
       ) {
 
         return {
+
           valid: false,
+
           message:
             `Please enter results for ${missingResults.length} parameter(s) before generating the report.`
+
         }
 
       }
 
       return {
+
         valid: true,
         message: ''
+
       }
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1909,6 +1962,7 @@ export function ResultEntry() {
                 new Date().toISOString()
 
             })
+
         }
 
         updateOrder(
@@ -1945,7 +1999,9 @@ export function ResultEntry() {
         setGenerating(false)
 
       }
+
     }
+
 
 
   // --------------------------------------------------------------------------
@@ -1979,6 +2035,7 @@ export function ResultEntry() {
         ),
       [rows]
     )
+
 
 
   // --------------------------------------------------------------------------
@@ -2032,16 +2089,25 @@ export function ResultEntry() {
         ).length
 
       return {
+
         total: rows.length,
+
         completed,
+
         normal,
+
         high,
+
         low,
+
         positive,
+
         abnormal
+
       }
 
     }, [rows])
+
 
 
   // --------------------------------------------------------------------------
@@ -2049,6 +2115,7 @@ export function ResultEntry() {
   // --------------------------------------------------------------------------
 
   return (
+
     <>
 
       {/* ======================================================================
@@ -2076,6 +2143,7 @@ export function ResultEntry() {
         </div>
 
 
+
         <div className="page-actions">
 
           <Link
@@ -2088,6 +2156,7 @@ export function ResultEntry() {
         </div>
 
       </div>
+
 
 
       {/* ======================================================================
@@ -2139,6 +2208,7 @@ export function ResultEntry() {
       </div>
 
 
+
       {/* ======================================================================
           RESULT SUMMARY
       ======================================================================= */}
@@ -2176,6 +2246,7 @@ export function ResultEntry() {
         />
 
       </div>
+
 
 
       {/* ======================================================================
@@ -2219,6 +2290,7 @@ export function ResultEntry() {
           </button>
 
         </div>
+
 
 
         <div className="table-wrap">
@@ -2268,6 +2340,7 @@ export function ResultEntry() {
             </thead>
 
 
+
             <tbody>
 
               {Object.entries(
@@ -2281,29 +2354,22 @@ export function ResultEntry() {
                 ) => (
 
                   <TestGroup
-
                     key={testId}
-
                     rows={
                       testRows
                     }
-
                     updateRow={
                       updateRow
                     }
-
                     updateStatus={
                       updateStatus
                     }
-
                     changeReferenceProfile={
                       changeReferenceProfile
                     }
-
                     showNotes={
                       showNotes
                     }
-
                   />
 
                 )
@@ -2314,6 +2380,7 @@ export function ResultEntry() {
           </table>
 
         </div>
+
 
 
         {/* ====================================================================
@@ -2349,6 +2416,7 @@ export function ResultEntry() {
             </div>
 
 
+
             <div
               className="text-sm text-muted"
               style={{
@@ -2376,6 +2444,7 @@ export function ResultEntry() {
           </div>
 
 
+
           {/* ================================================================
               ACTIONS
           ================================================================ */}
@@ -2389,12 +2458,11 @@ export function ResultEntry() {
               }
               disabled={saving}
             >
-
               {saving
                 ? 'Saving...'
                 : 'Save Results'}
-
             </button>
+
 
 
             <button
@@ -2404,11 +2472,9 @@ export function ResultEntry() {
               }
               disabled={generating}
             >
-
               {generating
                 ? 'Generating...'
                 : 'Generate Report →'}
-
             </button>
 
           </div>
@@ -2418,8 +2484,10 @@ export function ResultEntry() {
       </div>
 
     </>
+
   )
 }
+
 
 
 // ============================================================================
@@ -2493,6 +2561,7 @@ function TestGroup({
                 </div>
 
 
+
                 {rows.length > 1 &&
                   index === 0 && (
 
@@ -2506,6 +2575,7 @@ function TestGroup({
                     </div>
 
                   )}
+
 
 
                 {row.labSpecific && (
@@ -2525,6 +2595,7 @@ function TestGroup({
                 )}
 
 
+
                 {row.demographicFallback && (
 
                   <div
@@ -2542,6 +2613,7 @@ function TestGroup({
                 )}
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2577,10 +2649,10 @@ function TestGroup({
                   style={{
                     minWidth: 120
                   }}
-
                 />
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2608,10 +2680,10 @@ function TestGroup({
                   style={{
                     width: 115
                   }}
-
                 />
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2659,6 +2731,7 @@ function TestGroup({
                 </select>
 
 
+
                 {row.referenceProfile ===
                   'Auto' && (
 
@@ -2676,6 +2749,7 @@ function TestGroup({
                 )}
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2704,8 +2778,8 @@ function TestGroup({
                   style={{
                     minWidth: 135
                   }}
-
                 />
+
 
 
                 {row.demographicFallback && (
@@ -2724,6 +2798,7 @@ function TestGroup({
                 )}
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2771,24 +2846,26 @@ function TestGroup({
                 </select>
 
 
+
                 {row.result &&
                   row.status ===
                     'Not specified' && (
 
-                    <div
-                      style={{
-                        marginTop: 4,
-                        fontSize: 9.5,
-                        color:
-                          'var(--gray-500)'
-                      }}
-                    >
-                      Enter or select status
-                    </div>
+                  <div
+                    style={{
+                      marginTop: 4,
+                      fontSize: 9.5,
+                      color:
+                        'var(--gray-500)'
+                    }}
+                  >
+                    Enter or select status
+                  </div>
 
-                  )}
+                )}
 
               </td>
+
 
 
               {/* ==============================================================
@@ -2821,7 +2898,6 @@ function TestGroup({
                       minWidth: 160,
                       resize: 'vertical'
                     }}
-
                   />
 
                 </td>
@@ -2833,12 +2909,14 @@ function TestGroup({
           )
 
         }
+
       )}
 
     </>
 
   )
 }
+
 
 
 // ============================================================================
@@ -2871,6 +2949,7 @@ function InfoField({
       </label>
 
 
+
       <div
         className={
           mono
@@ -2890,6 +2969,7 @@ function InfoField({
 
   )
 }
+
 
 
 // ============================================================================
@@ -2924,6 +3004,7 @@ function SummaryCard({
       >
         {label}
       </div>
+
 
 
       <div
